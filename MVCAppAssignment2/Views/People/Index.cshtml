@@ -1,0 +1,62 @@
+﻿@model MVCAppAssignment2.Models.ViewModel.People;
+
+@{
+    ViewData["Title"] = "People";
+}
+
+<h2>People</h2>
+
+@if (Model != null)     // Lets start checking the Model data. Kan hela Model vara null förresten??
+{
+
+    <table>
+
+        @foreach (Person aPerson in Model.PersonList)
+        {
+            <tr class="dudes">
+                <td>@aPerson.FirstName</td>
+                <td>@aPerson.LastName</td>
+                <td>@aPerson.Phone</td>
+                <td>@aPerson.City</td>
+                <td><a asp-action="Remove" asp-controller="People" asp-route-id="@aPerson.Id">Remove</a></td>
+                <!---<td><button asp-action="Remove" asp-controller="People" asp-route-id="@aPerson.Id">Remove</button> </td>-->
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <h3>No data to show.</h3>
+}
+
+<hr />
+<h4>Filter</h4>
+<p>Waiting for implemetation.</p>
+
+<hr />
+<h4>Add person</h4>
+
+<form asp-action="Create" asp-controller="People" method="post">
+
+    <label asp-for="Person.FirstName"></label>
+    <input asp-for="Person.FirstName" />
+    <span asp-validation-for="Person.FirstName"></span>
+
+    <label asp-for="Person.LastName"></label>
+    <input asp-for="Person.LastName" />
+    <span asp-validation-for="Person.LastName"></span>
+
+    <label asp-for="Person.Phone"></label>
+    <input asp-for="Person.Phone" />
+    <span asp-validation-for="Person.Phone"></span>
+
+    <label asp-for="Person.City"></label>
+    <input asp-for="Person.City" />
+    <span asp-validation-for="Person.City"></span>
+
+
+    <button>Create</button>
+    <button type="reset">Reset</button>
+
+</form>
+

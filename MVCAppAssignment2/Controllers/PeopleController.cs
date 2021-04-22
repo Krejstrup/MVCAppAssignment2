@@ -27,6 +27,25 @@ namespace MVCAppAssignment2.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
+        public IActionResult Edit(int Id)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
+        [HttpPost]
+        public IActionResult Filter(People theModel)    // Still "" in datafields
+        {
+            // Eftersom inte datat kommer in ordentligt fungerar inte IsValid heller.
+            People returnList = new People();
+            returnList = MyService.FindBy(theModel);
+
+            ModelState.Clear();
+            return View("Index", returnList);
+        }
+
         [HttpPost]
         public IActionResult Create(People theModel)    // Still "" in datafields
         {
@@ -35,10 +54,8 @@ namespace MVCAppAssignment2.Controllers
                 MyService.Add(theModel.Person);
                 return RedirectToAction(nameof(Index)); //The RedirectToAction() method makes new requests, and URL in the
             }                                           // browser's address bar is updated with the generated URL by MVC.
-            return View("Index", theModel);
+            return View("Index", MyService.All());
 
         }
-
-
     }
 }

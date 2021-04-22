@@ -20,16 +20,16 @@ namespace MVCAppAssignment2.Models.ViewModel
 
         [Display(Name = "Filter")]
         public string filter { get; set; }       // My first idea was to use the CreatePerson, and to use a <form> as filter.
-                                    // I have to have the time for this implementation too...
+                                                 // I have to have the time for this implementation too...
 
         /// <summary>
         /// Constructor that creates a new empty list of persons.
         /// </summary>
-        //public People()
-        //{
-        //    PersonList = new List<Person>();
-        //    Person = new CreatePerson();
-        //}
+        public People()
+        {
+            PersonList = new List<Person>();
+            Person = new CreatePerson();
+        }
 
     }
 }

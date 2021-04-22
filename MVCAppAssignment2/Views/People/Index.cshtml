@@ -6,32 +6,46 @@
 
 <h2>People</h2>
 
-@if (Model != null)     // Lets start checking the Model data. Kan hela Model vara null förresten??
+@if (Model.PersonList.Count > 0)     // Lets start checking the Model data. Kan hela Model vara null förresten??
 {
+    <div id="ListContainer">
+        <table id="PersonList">
 
-    <table>
-
-        @foreach (Person aPerson in Model.PersonList)
-        {
-            <tr class="dudes">
-                <td>@aPerson.FirstName</td>
-                <td>@aPerson.LastName</td>
-                <td>@aPerson.Phone</td>
-                <td>@aPerson.City</td>
-                <td><a asp-action="Remove" asp-controller="People" asp-route-id="@aPerson.Id">Remove</a></td>
-                <!---<td><button asp-action="Remove" asp-controller="People" asp-route-id="@aPerson.Id">Remove</button> </td>-->
+            <tr>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Phone nr.</th>
+                <th>City</th>
+                <th>Action</th>
             </tr>
-        }
-    </table>
+            @foreach (Person aPerson in Model.PersonList)
+            {
+                <tr>
+                    <td>@aPerson.FirstName</td>
+                    <td>@aPerson.LastName</td>
+                    <td>@aPerson.Phone</td>
+                    <td>@aPerson.City</td>
+                    <td><a asp-action="Remove" asp-controller="People" asp-route-id="@aPerson.Id">Remove</a></td>
+                    @* <td><a asp-action="Edit" asp-controller="People" asp-route-id="@aPerson.Id">Edit</a> </td>*@
+                </tr>
+            }
+        </table>
+    </div>
 }
 else
 {
-    <h3>No data to show.</h3>
+    <h5>No data to show.</h5>
 }
 
 <hr />
-<h4>Filter</h4>
-<p>Waiting for implemetation.</p>
+<h4>Filter the list</h4>
+<form asp-action="Filter" asp-controller="People" method="post">
+    <label asp-for="filter"></label>
+    <input asp-for="filter" />
+    <span asp-validation-for="filter"></span>
+    <button>Use filter</button>
+    <button type="reset">Reset</button>
+</form>
 
 <hr />
 <h4>Add person</h4>

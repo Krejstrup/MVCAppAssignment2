@@ -1,5 +1,6 @@
 ﻿using MVCAppAssignment2.Models.Data;
 using MVCAppAssignment2.Models.ViewModel;
+using System.Collections.Generic;
 
 namespace MVCAppAssignment2.Models.Service
 {
@@ -49,10 +50,17 @@ namespace MVCAppAssignment2.Models.Service
         /// <returns>Returns a new list of all the matching searches. If non found the list is empty.</returns>
         public People FindBy(People search)
         {
+
+
             People newDataModel = new People();
             string lookup = search.filter;
 
-            if (lookup != null || lookup != "")          // looking for string match or Person data match??
+            if (newDataModel.PersonList == null)
+            {
+                newDataModel.PersonList = new List<Person>();
+            }
+
+            if (lookup != null && lookup != "")          // looking for string match or Person data match??
             {
                 foreach (Person memPers in memoryList.Read())
                 {
@@ -104,6 +112,7 @@ namespace MVCAppAssignment2.Models.Service
                 }
             }
             return newDataModel;
+
         }
 
 

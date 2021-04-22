@@ -17,13 +17,7 @@ namespace MVCAppAssignment2.Models.ViewModel
         [StringLength(12, MinimumLength = 4)]
         public string City { get; set; }
 
-        public CreatePerson()   // An Empty Constructor
-        {
-            FirstName = ""; // detta bara för att testa 
-            LastName = "";  // detta bara för att testa 
-            Phone = "";     // detta bara för att testa 
-            City = "";      // detta bara för att testa 
-        }
+
 
     }
 }

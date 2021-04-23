@@ -1,0 +1,39 @@
+﻿@model MVCAppAssignment2.Models.Data.Person
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+
+<div class="card " style="width: 10rem; background-color: beige; float:left;">
+@*<img class="card-img-top" src="..." alt="Card image cap">*@
+<div class="card-body">
+        <h5 class="card-title">
+            @Model.FirstName
+        </h5>
+        <p class="card-text">
+            @Model.LastName<br />
+            @Model.Phone<br />
+            @Model.City
+        </p>
+        <a class="btn btn-primary bt" asp-action="Remove" asp-controller="People" asp-route-id="@Model.Id">Remove</a>
+    </div>
+</div>
+
+
+@*<div class="row">
+    <div class="col-3">
+        @Model.FirstName
+    </div>
+    <div class="col-3">
+        @Model.LastName
+    </div>
+    <div class="col-3">
+        @Model.Phone
+    </div>
+    <div class="col-2">
+        @Model.City
+    </div>
+    <div class="col-1">
+        <a class="btn btn-warning bt" asp-action="Remove" asp-controller="People" asp-route-id="@Model.Id">Remove</a>
+    </div>
+</div>*@

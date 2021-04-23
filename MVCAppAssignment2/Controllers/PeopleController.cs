@@ -6,27 +6,39 @@ namespace MVCAppAssignment2.Controllers
 {
     public class PeopleController : Controller
     {
-        private IPeopleService MyService = new PeopleService();
-        //CreatePerson addPerson = new CreatePerson(); // bara för att debugga med Runar
+        private readonly IPeopleService _myService = new PeopleService();
 
+
+        /// <summary>
+        /// THe Index page gets a Data-View-Model of all the People in a List<>
+        /// </summary>
+        /// <returns>The build View by full list.</returns>
         [HttpGet]
         public IActionResult Index()
         {
-            /*addPerson.FirstName = "Runar";          // bara för att debugga
-            addPerson.LastName = "Bengtsson";
-            MyService.Add(addPerson);*/
-
-            return View(MyService.All());           // (Denna innehåller nu en static lista på alla personer)
+            return View(_myService.All());
         }
 
 
+
+        /// <summary>
+        /// Removes the selected person indexed by its Id.
+        /// </summary>
+        /// <param name="Id">The unique Id of this person.</param>
+        /// <returns>Redirect to the Index to redraw the whole page again.</returns>
         [HttpGet]
         public IActionResult Remove(int Id)
         {
-            MyService.Remove(Id);
+            _myService.Remove(Id);
             return RedirectToAction(nameof(Index));
         }
 
+
+        /// <summary>
+        /// Edit is directing to edit a person.
+        /// </summary>
+        /// <param name="Id">The unique Id of the person to be Edited.</param>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Edit(int Id)
         {
@@ -34,27 +46,51 @@ namespace MVCAppAssignment2.Controllers
         }
 
 
-
+        /// <summary>
+        /// Filter gets a Data model that contains a filter string and
+        /// a CreatePerson model. Both can be used as filtering.
+        /// Filter string search every field and the Person will be more specific.
+        /// THe ModelState has to be cleared before return!
+        /// </summary>
+        /// <param name="theModel"></param>
+        /// <returns>Returns to the Index page with a new filtered Data Model.</returns>
         [HttpPost]
-        public IActionResult Filter(People theModel)    // Still "" in datafields
+        public IActionResult Filter(People theModel)
         {
-            // Eftersom inte datat kommer in ordentligt fungerar inte IsValid heller.
-            People returnList = new People();
-            returnList = MyService.FindBy(theModel);
+            // At the moment there is no <form> that takes the Person data for filtering.
 
+            // First check if the filter string contains anything
+            if (theModel.filter != "" && theModel.filter != null)
+            {
+                theModel = _myService.FindBy(theModel);
+            }
+            // If the filter string is empty: return all.
+            else
+            {
+                theModel = _myService.All();
+            }
+
+            // The Model state has to be cleared befor returning to Index!
             ModelState.Clear();
-            return View("Index", returnList);
+
+            return View("Index", theModel);
         }
 
+        /// <summary>
+        /// Create uses the create <form> to create a new person.
+        /// </summary>
+        /// <param name="theModel">The data model containg a person.</param>
+        /// <returns>Return to Index page with all the People in the Data Model.</returns>
         [HttpPost]
-        public IActionResult Create(People theModel)    // Still "" in datafields
+        public IActionResult Create(People theModel)
         {
-            if (ModelState.IsValid)     // Eftersom inte datat kommer in ordentligt fungerar inte IsValid heller.
+            if (ModelState.IsValid)
             {
-                MyService.Add(theModel.Person);
+                _myService.Add(theModel.Person);
                 return RedirectToAction(nameof(Index)); //The RedirectToAction() method makes new requests, and URL in the
-            }                                           // browser's address bar is updated with the generated URL by MVC.
-            return View("Index", MyService.All());
+            }   // browser's address bar is updated with the generated URL by MVC. Standard Index will load.
+
+            return View("Index", _myService.All());
 
         }
     }

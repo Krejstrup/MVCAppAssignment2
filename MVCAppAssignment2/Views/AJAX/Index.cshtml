@@ -1,0 +1,34 @@
+﻿@model People
+@{
+    ViewData["Title"] = "AJAX People";
+}
+
+<h3>People List</h3>
+
+@*========  Lets start with showing all people =================*@
+
+<div id="showPlaceholder">
+
+</div>
+
+
+<hr />
+
+@*=== Show how we can filter and get that people list filtered ===*@
+
+<h4>Handle the list</h4>
+
+<input class="in" type="text" id="filterText" placeholder="id">
+<button class="btn btn-primary btn-sm" id="filterBtn">Filter with this</button>
+<button class="btn btn-warning btn-sm" id="deleteBtn">Delete</button>
+<br />
+<button class="btn btn-primary btn-sm" id="allBtn">Show all</button>
+
+<hr />
+
+
+
+<script src="~/js/PeopleJS.js"></script>
+@*END OF FILE*@
+
+

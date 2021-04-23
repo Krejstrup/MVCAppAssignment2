@@ -1,0 +1,31 @@
+﻿@model Person
+@*THis partial View is ony here to serv as a Table row header to the person that will be loaded*@
+
+<div class="row">
+    @*===THE BOOTSTRAP LOOSE TABLE TRICK===*@
+
+    <div class="col-3">
+        <h5>First Name</h5>
+    </div>
+    <div class="col-3">
+        <h5>Last Name</h5>
+    </div>
+    <div class="col-3">
+        <h5>Phone</h5>
+    </div>
+    <div class="col-2">
+        <h5>City</h5>
+    </div>
+    <div class="col-1">
+        <h5>Id</h5>
+    </div>
+</div>
+@if (Model != null)
+{
+    <partial name="../Shared/_PersonPartial" model="@Model" />
+
+}
+else
+{
+    <p>Data list empty - Id don't exist!</p>
+}

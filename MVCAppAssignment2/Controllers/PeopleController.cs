@@ -10,7 +10,8 @@ namespace MVCAppAssignment2.Controllers
 
 
         /// <summary>
-        /// THe Index page gets a Data-View-Model of all the People in a List<>
+        /// The Index page gets a Data-View-Model of all the People in a List<>.
+        /// The page is totally redrawn.
         /// </summary>
         /// <returns>The build View by full list.</returns>
         [HttpGet]
@@ -32,6 +33,7 @@ namespace MVCAppAssignment2.Controllers
             _myService.Remove(Id);
             return RedirectToAction(nameof(Index));
         }
+
 
 
         /// <summary>
@@ -75,6 +77,8 @@ namespace MVCAppAssignment2.Controllers
 
             return View("Index", theModel);
         }
+
+
 
         /// <summary>
         /// Create uses the create <form> to create a new person.

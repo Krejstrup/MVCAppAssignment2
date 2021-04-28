@@ -2,14 +2,14 @@
 @using System.Collections.Generic
 
 
-<div class="row">
-    <div class="col-3">
+<div class="row" id="@("per" + Model.Id)">
+    <div class="col-2">
         @Model.FirstName
     </div>
-    <div class="col-3">
+    <div class="col-2">
         @Model.LastName
     </div>
-    <div class="col-3">
+    <div class="col-2">
         @Model.Phone
     </div>
     <div class="col-2">
@@ -17,5 +17,13 @@
     </div>
     <div class="col-1">
         @Model.Id
+    </div>
+    <div class="col-1">
+        @*<input asp-for="Id" type="button" onclick="About(@Model.Id , event)" id="@("ab"+@Model.Id)" value="Details" />*@
+        <button class="btn btn-info btn-sm" onclick="About(@Model.Id , event)" id="@("ab"+@Model.Id)">Details</button>
+    </div>
+    <div class="col-1">
+        @*<input asp-for="Id" type="button" onclick="DeletePerson(@Model.Id ,event)" id="@("del"+@Model.Id)" value="Delete" />*@
+        <button class="btn btn-warning btn-sm" onclick="DeletePerson(@Model.Id ,event)" id="@("del"+@Model.Id)">Delete</button>
     </div>
 </div>

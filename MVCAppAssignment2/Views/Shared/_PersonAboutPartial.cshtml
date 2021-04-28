@@ -1,0 +1,21 @@
+﻿@model Person
+@using System.Collections.Generic
+
+
+<div class="card " style="width: 10rem; background-color: beige; float:left;" id="@("cab"+Model.Id)">
+    @*<img class="card-img-top" src="..." alt="Card image cap">*@
+    <div class="card-body">
+        <h5 class="card-title">
+            @Model.FirstName
+        </h5>
+        <p class="card-text">
+            @Model.LastName<br />
+            @Model.Phone<br />
+            @Model.City
+        </p>
+        <button class="btn btn-info btn-sm"  onclick="CloseAbout(@Model.Id, event)" >Close</button>
+    </div>
+</div>
+
+<div style="clear:both"></div>
+

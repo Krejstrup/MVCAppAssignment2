@@ -37,19 +37,84 @@ namespace MVCAppAssignment2.Controllers
         {
             Person onePerson = _myService.FindBy(Id);
 
-            return PartialView("_OnePersonPartial", onePerson);
+            if (onePerson != null)
+            {
+                return PartialView("_OnePersonPartial", onePerson);
+            }
+
+
+            return PartialView("_AllPersonsPartial", _myService.All());
         }
 
 
         [HttpPost]
+        public IActionResult About(int Id) // WORKS!!
+        {
+            Person onePerson = _myService.FindBy(Id);
+
+            if (onePerson != null)
+            {
+                //return PartialView("_personThumbnail", onePerson);
+                return PartialView("_PersonAboutPartial", onePerson);
+            }
+            return PartialView("_AllPersonsPartial", _myService.All());
+        }
+
+
+        [HttpPost]
+        public IActionResult NotAbout(int Id) // WORKS??
+        {
+            Person onePerson = _myService.FindBy(Id);
+
+            if (onePerson != null)
+            {
+                //return PartialView("_personThumbnail", onePerson);
+                return PartialView("_PersonPartial", onePerson);
+            }
+            return PartialView("_AllPersonsPartial", _myService.All());
+        }
+
+        [HttpPost]
         public IActionResult Remove(int Id) // WORKS!!
         {
-            _myService.Remove(Id);
-            return RedirectToAction(nameof(Index));
+            Person aPerson = _myService.FindBy(Id);
+
+            if (aPerson == null)
+            {
+                return NotFound();
+            }
+
+            if (_myService.Remove(Id))
+            {
+                return Ok(Id);
+            }
+
+            return BadRequest();
+            //return RedirectToAction(nameof(Index));
+
         }
 
 
 
 
+        [HttpPost]
+        public IActionResult Edit(Person aPerson) // WORKS NOT QUITE YET!!
+        {
+            //Person aPerson = _myService.FindBy(Id);
+
+            if (aPerson == null)
+            {
+                return NotFound();
+            }
+
+            if (_myService.Edit(aPerson.Id, aPerson) != null)
+            {
+                return Ok(aPerson.Id);
+            }
+
+            return BadRequest();
+            //return RedirectToAction(nameof(Index));
+
+        }
     }
 }

@@ -23,7 +23,7 @@ namespace MVCAppAssignment2.Models.Service
         /// <returns>Returns the newly created Person.</returns>
         public Person Add(CreatePerson addPerson)
         {
-            return memoryList.Create(addPerson.FirstName, addPerson.LastName, addPerson.Phone, addPerson.City);
+            return memoryList.Create(addPerson);
         }
 
 
@@ -60,7 +60,7 @@ namespace MVCAppAssignment2.Models.Service
                 newDataModel.PersonList = new List<Person>();
             }
 
-            if (lookup != null && lookup != "")          // looking for string match or Person data match??
+            if (lookup != null && lookup != "")          // Shall we start looking string match by filter input?
             {
                 foreach (Person memPers in memoryList.Read())
                 {
@@ -80,12 +80,9 @@ namespace MVCAppAssignment2.Models.Service
                     {
                         newDataModel.PersonList.Add(memPers);
                     }
-
                 }
-
-
             }
-            else if (search.PersonList.Count > 0) // Lookong for a Person data match from form input
+            else if (search.PersonList.Count > 0)       // Proceed looking for a Person matching a form-input:
             {
                 foreach (Person memPers in memoryList.Read())
                 {
@@ -166,5 +163,25 @@ namespace MVCAppAssignment2.Models.Service
             Person aPerson = FindBy(id);
             return memoryList.Delete(aPerson);
         }
+
+        /// <summary>
+        /// This is an overload for the RemoveBy Id. The former looks up the person, in this overload
+        /// the person is allready known.
+        /// </summary>
+        /// <param name="aPerson">A person known from a previous lookup.</param>
+        /// <returns></returns>
+        public bool Remove(Person aPerson)
+        {
+            if (aPerson != null)
+            {
+                return memoryList.Delete(aPerson);
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
     }
 }

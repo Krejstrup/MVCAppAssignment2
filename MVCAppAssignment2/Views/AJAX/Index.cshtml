@@ -8,6 +8,7 @@
 @*========  Lets start with showing all people =================*@
 
 <div id="showPlaceholder">
+    @*The onload is a test on how to force loading the partial view*@
 
 </div>
 
@@ -18,8 +19,8 @@
 
 <h4>Handle the list</h4>
 
-<input class="in" type="text" id="filterText" placeholder="id">
-<button class="btn btn-primary btn-sm" id="filterBtn">Filter with this</button>
+<input class="in" type="text" id="filterText" placeholder="Id">
+<button class="btn btn-primary btn-sm" id="filterBtn">Filter with Id</button>
 <button class="btn btn-warning btn-sm" id="deleteBtn">Delete</button>
 <br />
 <button class="btn btn-primary btn-sm" id="allBtn">Show all</button>
@@ -28,7 +29,9 @@
 
 
 
-<script src="~/js/PeopleJS.js"></script>
+<script src="~/js/PeopleJS.js" asp-append-version="true"></script>
+
+
 @*END OF FILE*@
 
 

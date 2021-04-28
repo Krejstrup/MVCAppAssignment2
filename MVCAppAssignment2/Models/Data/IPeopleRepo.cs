@@ -1,17 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using MVCAppAssignment2.Models.ViewModel;
+using System.Collections.Generic;
 
 namespace MVCAppAssignment2.Models.Data
 {
     interface IPeopleRepo
     {
-        Person Create(string firstName, string lastName, string phone, string city);
+        Person Create(CreatePerson aPerson);
 
         List<Person> Read();
 
         Person Read(int id);
 
-        Person Update(Person person);
+        Person Update(Person aPerson);
 
-        bool Delete(Person Person);
+        bool Delete(Person aPerson);
     }
 }

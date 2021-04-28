@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MVCAppAssignment2.Models.ViewModel;
+using System.Collections.Generic;
 
 namespace MVCAppAssignment2.Models.Data
 {
@@ -16,9 +17,17 @@ namespace MVCAppAssignment2.Models.Data
         /// <param name="phone">The phone number of this person.</param>
         /// <param name="city">The city of this person</param>
         /// <returns>Returns the new person object.</returns>
-        public Person Create(string inFirstName, string inLastName, string phone, string city)
-        {
-            Person aNewPerson = new Person(++_id, inFirstName, inLastName, phone, city);
+        public Person Create(CreatePerson aPerson)  //string inFirstName, string inLastName, string phone, string city
+        {   // Could use a Person Data field instead: Create(CreatePerson aPerson) 
+            // = new CreatePerson() {Id = ++_id, FirstName = aPerson.FirstName, LastName= aPerson.LastName etc
+            Person aNewPerson = new Person()
+            {
+                Id = ++_id,
+                FirstName = aPerson.FirstName,
+                LastName = aPerson.LastName,
+                Phone = aPerson.Phone,
+                City = aPerson.City
+            };
 
             _personList.Add(aNewPerson);
             return aNewPerson;
@@ -67,14 +76,14 @@ namespace MVCAppAssignment2.Models.Data
 
             if (mate != null)
             {
-                    mate.FirstName = person.FirstName;
-                    mate.LastName = person.LastName;
-                    mate.Phone = person.Phone;
-                    mate.City = person.City;
+                mate.FirstName = person.FirstName;
+                mate.LastName = person.LastName;
+                mate.Phone = person.Phone;
+                mate.City = person.City;
 
-                    return mate;
+                return mate;
             }
-            
+
             return null;
         }
 

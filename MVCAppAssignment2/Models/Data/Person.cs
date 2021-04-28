@@ -8,14 +8,5 @@
         public string Phone { get; set; }
         public string City { get; set; }
 
-
-        public Person(int inId, string inFirstName, string inLastName, string inPhone, string inCity)
-        {
-            Id = inId;
-            FirstName = inFirstName;
-            LastName = inLastName;
-            Phone = inPhone;
-            City = inCity;
-        }
     }
 }

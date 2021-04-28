@@ -90,8 +90,8 @@ namespace MVCAppAssignment2.Controllers
         {
             if (ModelState.IsValid)
             {
-                _myService.Add(theModel.Person);
-                return RedirectToAction(nameof(Index)); //The RedirectToAction() method makes new requests, and URL in the
+                _myService.Add(theModel.Person);        // send up the CreatePerson class data
+                return RedirectToAction(nameof(Index)); // The RedirectToAction() method makes new requests, and URL in the
             }   // browser's address bar is updated with the generated URL by MVC. Standard Index will load.
 
             return View("Index", _myService.All());

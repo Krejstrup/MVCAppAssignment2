@@ -43,7 +43,7 @@ namespace MVCAppAssignment2.Controllers
             }
 
 
-            return PartialView("_AllPersonsPartial", _myService.All());
+            return NotFound(); // PartialView("_AllPersonsPartial", _myService.All());
         }
 
 

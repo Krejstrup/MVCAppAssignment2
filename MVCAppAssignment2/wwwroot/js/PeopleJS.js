@@ -30,8 +30,21 @@ function ajaxFilter(event) {
     if (event != null) event.preventDefault();
 
     $.post("AJAX/Filter", {Id: idTexField.value},function (data, status) {
+        if (status == "success") {
+            
             resultContainer.innerHTML = data;
-     });
+            
+        }
+
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+
+        if (jqXHR.status == 404) {
+            alert("Filter failed!");
+
+        } else {
+            alert("Status: " + jqXHR.status);
+        }
+    });
 
 }
 
@@ -55,7 +68,7 @@ function ajaxRemove(element, event) {
             alert("Status: " + jqXHR.status);
         }
 
-        });;
+        });
 }
 
 

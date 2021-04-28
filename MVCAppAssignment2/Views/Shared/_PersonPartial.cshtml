@@ -1,6 +1,8 @@
 ﻿@model Person
 @using System.Collections.Generic
 
+@* This is a partial view of one single person - typically called from AllPersonsPartial view*@
+@* This partial view is allso called from the about to replace the about info partial view*@
 
 <div class="row" id="@("per" + Model.Id)">
     <div class="col-2">
@@ -19,11 +21,9 @@
         @Model.Id
     </div>
     <div class="col-1">
-        @*<input asp-for="Id" type="button" onclick="About(@Model.Id , event)" id="@("ab"+@Model.Id)" value="Details" />*@
         <button class="btn btn-info btn-sm" onclick="About(@Model.Id , event)" id="@("ab"+@Model.Id)">Details</button>
     </div>
     <div class="col-1">
-        @*<input asp-for="Id" type="button" onclick="DeletePerson(@Model.Id ,event)" id="@("del"+@Model.Id)" value="Delete" />*@
         <button class="btn btn-warning btn-sm" onclick="DeletePerson(@Model.Id ,event)" id="@("del"+@Model.Id)">Delete</button>
     </div>
 </div>

@@ -6,8 +6,12 @@ namespace MVCAppAssignment2.Controllers
 {
     public class PeopleController : Controller
     {
-        private readonly IPeopleService _myService = new PeopleService();
+        IPeopleService _myService;
 
+        public PeopleController(IPeopleService theService)  // Constuctor Dependency Injection
+        {
+            _myService = theService;
+        }
 
         /// <summary>
         /// The Index page gets a Data-View-Model of all the People in a List<>.

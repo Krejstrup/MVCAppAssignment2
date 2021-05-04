@@ -10,9 +10,12 @@ namespace MVCAppAssignment2.Controllers
 
     public class AJAXController : Controller
     {
-        private readonly IPeopleService _myService = new PeopleService();
+        private readonly IPeopleService _myService;
 
-
+        public AJAXController(IPeopleService theService)//constuctor injection
+        {
+            _myService = theService;
+        }
 
         /// <summary>
         /// Index loads the entire page with a view.

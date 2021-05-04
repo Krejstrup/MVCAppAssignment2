@@ -4,7 +4,7 @@ using MVCAppAssignment2.Models.ViewModel;
 
 namespace MVCAppAssignment2.Models.Service
 {
-    interface IPeopleService
+    public interface IPeopleService
     {
         public Person Add(CreatePerson person);
 

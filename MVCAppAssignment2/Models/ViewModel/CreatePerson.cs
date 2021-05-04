@@ -13,6 +13,7 @@ namespace MVCAppAssignment2.Models.ViewModel
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
+        [StringLength(30)]
         [Display(Name = "Phone Number")]
         [DataType(DataType.PhoneNumber)]
         public string Phone { get; set; }

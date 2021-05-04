@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MVCAppAssignment2.Models.Data
 {
-    interface IPeopleRepo
+    public interface IPeopleRepo
     {
         Person Create(CreatePerson aPerson);
 

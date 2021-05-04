@@ -1,27 +1,44 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MVCAppAssignment2.Models.Data;
+using MVCAppAssignment2.Models.Repo;
+using MVCAppAssignment2.Models.Service;
 
 namespace MVCAppAssignment2
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        //== This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();
-        }
+            services.AddDbContext<PeopleDbContext>(options =>       // Add the DbContext to ConfigServices (as #5)
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+
+            //==== Register the Dependency Injections to the service (as #6) ===:
+            services.AddScoped<IPeopleRepo, DatabasePeopleRepo>();          // Add dependency Injection for InterfaceService
+            //services.AddSingleton<IPeopleRepo, InMemoryPeopleRepo>();     // Keeps this in memory as long as app is running
+            services.AddScoped<IPeopleService, PeopleService>();            // The scoped only uses the limited lifespan.
+
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();    // Original setup
+        }   // remove the migration with: ef migrations remove
+
+
+
+
+        //== This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

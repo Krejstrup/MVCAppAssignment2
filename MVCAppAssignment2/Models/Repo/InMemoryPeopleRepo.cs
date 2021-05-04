@@ -5,8 +5,14 @@ namespace MVCAppAssignment2.Models.Data
 {
     public class InMemoryPeopleRepo : IPeopleRepo
     {
-        private static int _id = 0;
-        private static List<Person> _personList = new List<Person>();
+        int _id = 0;
+        readonly List<Person> _personList;       // This is now a Singleton service from Startup.cs
+
+
+        public InMemoryPeopleRepo()
+        {
+            _personList = new List<Person>();
+        }
 
 
         /// <summary>

@@ -7,13 +7,17 @@ namespace MVCAppAssignment2.Models.Service
     /// <summary>
     /// People service is an implementation of the interface IPeopleService.
     /// Purpose: To act as a handler for any type of memory data handler...
+    /// Dependency Injection using the constructor.
     /// </summary>
     public class PeopleService : IPeopleService
     {
 
-        private static InMemoryPeopleRepo memoryList = new InMemoryPeopleRepo();
+        IPeopleRepo _memoryList;
 
-
+        public PeopleService(IPeopleRepo theRepo)
+        {
+            _memoryList = theRepo;
+        }
 
 
         /// <summary>
@@ -23,7 +27,7 @@ namespace MVCAppAssignment2.Models.Service
         /// <returns>Returns the newly created Person.</returns>
         public Person Add(CreatePerson addPerson)
         {
-            return memoryList.Create(addPerson);
+            return _memoryList.Create(addPerson);
         }
 
 
@@ -36,7 +40,7 @@ namespace MVCAppAssignment2.Models.Service
         {
             People theWholeList = new People();
 
-            theWholeList.PersonList = memoryList.Read();
+            theWholeList.PersonList = _memoryList.Read();
             return theWholeList;
         }
 
@@ -62,7 +66,7 @@ namespace MVCAppAssignment2.Models.Service
 
             if (lookup != null && lookup != "")          // Shall we start looking string match by filter input?
             {
-                foreach (Person memPers in memoryList.Read())
+                foreach (Person memPers in _memoryList.Read())
                 {
                     if (lookup == memPers.FirstName)
                     {
@@ -84,7 +88,7 @@ namespace MVCAppAssignment2.Models.Service
             }
             else if (search.PersonList.Count > 0)       // Proceed looking for a Person matching a form-input:
             {
-                foreach (Person memPers in memoryList.Read())
+                foreach (Person memPers in _memoryList.Read())
                 {
                     foreach (Person searchPers in search.PersonList)
                     {
@@ -120,7 +124,7 @@ namespace MVCAppAssignment2.Models.Service
         /// <returns>Retuns the found person or null if person not found.</returns>
         public Person FindBy(int id)
         {
-            foreach (Person aPerson in memoryList.Read())
+            foreach (Person aPerson in _memoryList.Read())
             {
                 if (aPerson.Id == id)
                 {
@@ -161,7 +165,7 @@ namespace MVCAppAssignment2.Models.Service
         public bool Remove(int id)
         {
             Person aPerson = FindBy(id);
-            return memoryList.Delete(aPerson);
+            return _memoryList.Delete(aPerson);
         }
 
         /// <summary>
@@ -174,7 +178,7 @@ namespace MVCAppAssignment2.Models.Service
         {
             if (aPerson != null)
             {
-                return memoryList.Delete(aPerson);
+                return _memoryList.Delete(aPerson);
             }
             else
             {

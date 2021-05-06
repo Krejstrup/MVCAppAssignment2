@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVCAppAssignment2.Models.Data
 {
@@ -17,16 +18,9 @@ namespace MVCAppAssignment2.Models.Data
         [MaxLength(30)]
         public string Phone { get; set; }
 
-        [MaxLength(30)]
-        public string City { get; set; }
+        [ForeignKey("InCity")]
+        public int CityId { get; set; }
 
-        [MaxLength(30)]
-        public string Country { get; set; }
-
-        //[ForeignKey("InCity")]
-        //public int CityId { get; set; }
-
-
-        //public City InCity { get; set; }
+        public City InCity { get; set; }
     }
 }

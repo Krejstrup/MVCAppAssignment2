@@ -64,13 +64,8 @@ namespace MVCAppAssignment2.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("City")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<string>("Country")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -87,16 +82,36 @@ namespace MVCAppAssignment2.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CityId");
+
                     b.ToTable("Peoples");
                 });
 
             modelBuilder.Entity("MVCAppAssignment2.Models.Data.City", b =>
                 {
-                    b.HasOne("MVCAppAssignment2.Models.Data.Country", null)
+                    b.HasOne("MVCAppAssignment2.Models.Data.Country", "Country")
                         .WithMany("Cities")
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Country");
+                });
+
+            modelBuilder.Entity("MVCAppAssignment2.Models.Data.Person", b =>
+                {
+                    b.HasOne("MVCAppAssignment2.Models.Data.City", "InCity")
+                        .WithMany("People")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("InCity");
+                });
+
+            modelBuilder.Entity("MVCAppAssignment2.Models.Data.City", b =>
+                {
+                    b.Navigation("People");
                 });
 
             modelBuilder.Entity("MVCAppAssignment2.Models.Data.Country", b =>

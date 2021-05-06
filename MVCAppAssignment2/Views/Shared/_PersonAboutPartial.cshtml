@@ -2,7 +2,7 @@
 @using System.Collections.Generic
 
 @* This is a partial view that shows a card info of a specific person *@
-@* This partial view is typically called from the About and replaces the standard partial view *@ 
+@* This partial view is typically called from the About and replaces the standard partial view *@
 
 
 <div class="card " style="width: 10rem; background-color: beige; float:left;" id="@("cab"+Model.Id)">
@@ -14,9 +14,9 @@
         <p class="card-text">
             @Model.LastName<br />
             @Model.Phone<br />
-            @Model.City
+            @(Model.InCity==null ? "Oops!":Model.InCity.Name)
         </p>
-        <button class="btn btn-info btn-sm"  onclick="CloseAbout(@Model.Id, event)" >Close</button>
+        <button class="btn btn-info btn-sm" onclick="CloseAbout(@Model.Id, event)">Close</button>
     </div>
 </div>
 

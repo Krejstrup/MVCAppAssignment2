@@ -10,13 +10,13 @@ namespace MVCAppAssignment2.Controllers
 
     public class AJAXController : Controller
     {
-        private readonly IPeopleService _myService;
+        private readonly IPeopleService _myPService;
         private readonly ICityService _myCityService;
         private readonly ICountryService _myCountryService;
 
         public AJAXController(IPeopleService theService, ICityService aCityService, ICountryService aCountryService)//constuctor injection
         {
-            _myService = theService;
+            _myPService = theService;
             _myCityService = aCityService;
             _myCountryService = aCountryService;
         }
@@ -43,8 +43,11 @@ namespace MVCAppAssignment2.Controllers
         public IActionResult AllPersons() // WORKS!!
         {
             // Send down all the persons in this Model
-            People everyPerson = _myService.All();
-            return PartialView("_AllPersonsPartial", everyPerson);
+            People allThePeopleAndCities = _myPService.All();
+            Cities everCity = _myCityService.All();
+            allThePeopleAndCities.CityList = everCity.CityList;
+
+            return PartialView("_AllPersonsPartial", allThePeopleAndCities);
         }
 
 
@@ -56,11 +59,12 @@ namespace MVCAppAssignment2.Controllers
         [HttpPost]
         public IActionResult Filter(int Id)
         {
-            Person onePerson = _myService.FindBy(Id);
+            Person onePerson = _myPService.FindBy(Id);  // Person does not have room for Cities...
 
             if (onePerson != null)
             {
-
+                //Cities everCity = _myCityService.All();
+                //allThePeopleAndCities.CityList = everCity.CityList;
                 return PartialView("_OnePersonPartial", onePerson);
             }
             return NotFound();
@@ -75,13 +79,13 @@ namespace MVCAppAssignment2.Controllers
         [HttpPost]
         public IActionResult About(int Id) // WORKS!!
         {
-            Person onePerson = _myService.FindBy(Id);
+            Person onePerson = _myPService.FindBy(Id);
 
             if (onePerson != null)
             {
                 return PartialView("_PersonAboutPartial", onePerson);
             }
-            return PartialView("_AllPersonsPartial", _myService.All());
+            return PartialView("_AllPersonsPartial", _myPService.All());
         }
 
         /// <summary>
@@ -92,13 +96,13 @@ namespace MVCAppAssignment2.Controllers
         [HttpPost]
         public IActionResult NotAbout(int Id) // WORKS!!
         {
-            Person onePerson = _myService.FindBy(Id);
+            Person onePerson = _myPService.FindBy(Id);
 
             if (onePerson != null)
             {
                 return PartialView("_PersonPartial", onePerson);
             }
-            return PartialView("_AllPersonsPartial", _myService.All());
+            return PartialView("_AllPersonsPartial", _myPService.All());
         }
 
 
@@ -110,14 +114,14 @@ namespace MVCAppAssignment2.Controllers
         [HttpPost]
         public IActionResult Remove(int Id) // WORKS!!
         {
-            Person aPerson = _myService.FindBy(Id);
+            Person aPerson = _myPService.FindBy(Id);
 
             if (aPerson == null)
             {
                 return NotFound();
             }
 
-            if (_myService.Remove(Id))
+            if (_myPService.Remove(Id))
             {
                 return Ok(Id);
             }
@@ -141,7 +145,7 @@ namespace MVCAppAssignment2.Controllers
                 return NotFound();
             }
 
-            if (_myService.Edit(aPerson.Id, aPerson) != null)
+            if (_myPService.Edit(aPerson.Id, aPerson) != null)
             {
                 return Ok(aPerson.Id);
             }

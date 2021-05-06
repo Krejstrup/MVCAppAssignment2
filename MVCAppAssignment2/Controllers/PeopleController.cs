@@ -7,10 +7,12 @@ namespace MVCAppAssignment2.Controllers
     public class PeopleController : Controller
     {
         IPeopleService _myService;
+        ICityService _myCityService;
 
-        public PeopleController(IPeopleService theService)  // Constuctor Dependency Injection
+        public PeopleController(IPeopleService theService, ICityService cityService)  // Constuctor Dependency Injection
         {
             _myService = theService;
+            _myCityService = cityService;
         }
 
 
@@ -26,7 +28,11 @@ namespace MVCAppAssignment2.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return View(_myService.All());
+            People allThePeopleAndCities = _myService.All();
+            Cities everCity = _myCityService.All();
+            allThePeopleAndCities.CityList = everCity.CityList;
+
+            return View(allThePeopleAndCities);
         }
 
 
@@ -40,6 +46,7 @@ namespace MVCAppAssignment2.Controllers
         {
             if (ModelState.IsValid)
             {
+                theModel.Person.CityId = theModel.CityId;
                 _myService.Add(theModel.Person);        // send up the CreatePerson class data
                 return RedirectToAction(nameof(Index)); // The RedirectToAction() method makes new requests, and URL in the
             }   // browser's address bar is updated with the generated URL by MVC. Standard Index will load.
@@ -101,9 +108,13 @@ namespace MVCAppAssignment2.Controllers
             {
                 theModel = _myService.All();
             }
+            Cities everCity = _myCityService.All();
+            theModel.CityList = everCity.CityList;
 
-            // The Model state has to be cleared befor returning to Index!
+            // The Model state has to be cleared before returning to Index!
             ModelState.Clear();
+
+
 
             return View("Index", theModel);
         }

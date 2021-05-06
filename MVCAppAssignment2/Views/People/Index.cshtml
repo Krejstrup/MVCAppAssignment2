@@ -67,7 +67,7 @@
 }
 else
 {
-    <h5>No data to show.</h5>
+    <h5>No Persons. Start with Countries, then Cities!</h5>
 }
 
 
@@ -98,9 +98,21 @@ else
     <input asp-for="Person.Phone" />
     <span asp-validation-for="Person.Phone"></span>
 
-    <label asp-for="Person.City"></label>
-    <input asp-for="Person.City" />
-    <span asp-validation-for="Person.City"></span>
+    @*<label asp-for="Person.CityId"></label>
+        <input asp-for="Person.CityId" />
+        <span asp-validation-for="Person.CityId"></span>*@
+
+
+
+    <label asp-for="CityId"></label>    @* eller CountryId *@
+    <select asp-for="CityId">
+        @foreach (City aCity in Model.CityList)
+        {
+            <option value="@aCity.Id">@aCity.Name</option>
+
+        }
+    </select>
+    <span asp-validation-for="CityId"></span>
 
 
     <button>Create</button>

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVCAppAssignment2.Models.Data
 {
@@ -13,11 +15,11 @@ namespace MVCAppAssignment2.Models.Data
         public string Name { get; set; }
 
 
-        //public List<Person> People { get; set; }
+        public List<Person> People { get; set; }
 
-        //[ForeignKey("Country")]
+        [ForeignKey("Country")]
         public int CountryId { get; set; }
 
-        //public Country Country { get; set; }
+        public Country Country { get; set; }
     }
 }

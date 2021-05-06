@@ -1,5 +1,4 @@
 ﻿@model MVCAppAssignment2.Models.Data.Person
-
 @*  The card partial view for the first display *@
 
 
@@ -12,7 +11,7 @@
         <p class="card-text">
             @Model.LastName<br />
             @Model.Phone<br />
-            @Model.City
+            @(Model.InCity == null? "Oops!" : Model.InCity.Name)
         </p>
         <a class="btn btn-danger bt btn-sm" asp-action="Remove" asp-controller="People" asp-route-id="@Model.Id">Remove</a>
     </div>

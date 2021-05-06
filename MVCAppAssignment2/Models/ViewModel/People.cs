@@ -18,6 +18,7 @@ namespace MVCAppAssignment2.Models.ViewModel
         [Display(Name = "List of Cities")]
         public List<City> CityList { get; set; }
 
+        public int CityId { get; set; }
 
         [Display(Name = "A Person")]
         public CreatePerson Person { get; set; }

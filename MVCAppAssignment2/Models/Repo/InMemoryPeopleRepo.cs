@@ -32,7 +32,7 @@ namespace MVCAppAssignment2.Models.Data
                 FirstName = aPerson.FirstName,
                 LastName = aPerson.LastName,
                 Phone = aPerson.Phone,
-                City = aPerson.City
+                //City = aPerson.City   // It's not a string anymore!!!
             };
 
             _personList.Add(aNewPerson);
@@ -85,7 +85,7 @@ namespace MVCAppAssignment2.Models.Data
                 mate.FirstName = person.FirstName;
                 mate.LastName = person.LastName;
                 mate.Phone = person.Phone;
-                mate.City = person.City;
+                // mate.City = person.City; // It's not a string anymore!!
 
                 return mate;
             }

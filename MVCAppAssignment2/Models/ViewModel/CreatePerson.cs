@@ -18,9 +18,9 @@ namespace MVCAppAssignment2.Models.ViewModel
         [DataType(DataType.PhoneNumber)]
         public string Phone { get; set; }
 
-        [StringLength(30)]
-        [Display(Name = "City")]
-        public string City { get; set; }
+        [Required]
+        [Display(Name = "CityId")]
+        public int CityId { get; set; }
 
 
 

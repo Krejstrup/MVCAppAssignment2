@@ -29,14 +29,13 @@ namespace MVCAppAssignment2.Models.Repo
                 FirstName = aPerson.FirstName,
                 LastName = aPerson.LastName,
                 Phone = aPerson.Phone,
-                City = aPerson.City
+                CityId = aPerson.CityId,       // NEW: int CityId from the ViewModel && City InCity from the Controller
+                InCity = _myDbContext.Cities.SingleOrDefault(row => row.Id == aPerson.CityId)
             };
 
             _myDbContext.Peoples.Add(aNewPerson);
             int result = _myDbContext.SaveChanges();
-            // SqlException: Cannot insert the value NULL into column 'CityId', table 'PeopleDB.dbo.Peoples';
-            // column does not allow nulls. INSERT fails.
-            // The statement has been terminated.
+
 
             if (result == 0)    // 0 is no changes to database
             {
@@ -68,7 +67,8 @@ namespace MVCAppAssignment2.Models.Repo
                 FirstName = aPerson.FirstName,
                 LastName = aPerson.LastName,
                 Phone = aPerson.Phone,
-                City = aPerson.City
+                CityId = aPerson.CityId,
+                InCity = _myDbContext.Cities.SingleOrDefault(row => row.Id == aPerson.CityId)
             };
 
 

@@ -1,5 +1,6 @@
 ﻿using MVCAppAssignment2.Models.Data;
 using MVCAppAssignment2.Models.ViewModel;
+using System;
 using System.Collections.Generic;
 
 namespace MVCAppAssignment2.Models.Service
@@ -50,12 +51,10 @@ namespace MVCAppAssignment2.Models.Service
         /// to lookup all persons in memory to match the search. All matches is put into a
         /// new list.
         /// </summary>
-        /// <param name="search">A person data template with search data.</param>
+        /// <param name="search">A person data template with string search, from the filter data.</param>
         /// <returns>Returns a new list of all the matching searches. If non found the list is empty.</returns>
         public People FindBy(People search)
         {
-
-
             People newDataModel = new People();
             string lookup = search.filter;
 
@@ -66,8 +65,11 @@ namespace MVCAppAssignment2.Models.Service
 
             if (lookup != null && lookup != "")          // Shall we start looking string match by filter input?
             {
+                int parseInt = 0;
+                bool isNumber = false;
                 foreach (Person memPers in _memoryList.Read())
                 {
+                    isNumber = Int32.TryParse(lookup, out parseInt);
                     if (lookup == memPers.FirstName)
                     {
                         newDataModel.PersonList.Add(memPers);
@@ -80,9 +82,10 @@ namespace MVCAppAssignment2.Models.Service
                     {
                         newDataModel.PersonList.Add(memPers);
                     }
-                    else if (lookup == memPers.City)
+                    else if (isNumber)
                     {
-                        newDataModel.PersonList.Add(memPers);
+                        if (parseInt == memPers.CityId)
+                            newDataModel.PersonList.Add(memPers);
                     }
                 }
             }
@@ -104,7 +107,7 @@ namespace MVCAppAssignment2.Models.Service
                         {
                             newDataModel.PersonList.Add(memPers);
                         }
-                        else if (searchPers.City == memPers.City)
+                        else if (searchPers.CityId == memPers.CityId)
                         {
                             newDataModel.PersonList.Add(memPers);
                         }
@@ -151,7 +154,8 @@ namespace MVCAppAssignment2.Models.Service
                 aPerson.FirstName = person.FirstName;
                 aPerson.LastName = person.LastName;
                 aPerson.Phone = person.Phone;
-                aPerson.City = person.City;
+                aPerson.CityId = person.CityId;
+                //aPerson.City = person.City; we are not using this string identity for City anymore!
             }
 
             return aPerson;

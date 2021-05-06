@@ -2,7 +2,7 @@
 
 namespace MVCAppAssignment2.Migrations
 {
-    public partial class RealationsAdded : Migration
+    public partial class Nofear : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,23 +17,6 @@ namespace MVCAppAssignment2.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Countries", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Peoples",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    Phone = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    City = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    Country = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Peoples", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -56,19 +39,46 @@ namespace MVCAppAssignment2.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Peoples",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
+                    Phone = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
+                    CityId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Peoples", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Peoples_Cities_CityId",
+                        column: x => x.CityId,
+                        principalTable: "Cities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Cities_CountryId",
                 table: "Cities",
                 column: "CountryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Peoples_CityId",
+                table: "Peoples",
+                column: "CityId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Cities");
+                name: "Peoples");
 
             migrationBuilder.DropTable(
-                name: "Peoples");
+                name: "Cities");
 
             migrationBuilder.DropTable(
                 name: "Countries");

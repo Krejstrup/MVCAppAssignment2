@@ -1,0 +1,51 @@
+﻿@model Countries
+@{
+    ViewData["Title"] = "Create Country";
+}
+
+<h1>Countries Database</h1>
+
+@if (Model.CountryList.Count > 0)     // Lets start checking the Model data.
+{
+    <div id="ListContainer">
+        @*===THE OLD HTML TABLE TRICK===*@
+        <table id="ListList">
+            <tr>
+                <th>Name of Country</th>
+
+                <th>Action</th>
+            </tr>
+            @foreach (Country aCountry in Model.CountryList)
+            {
+                <tr>
+                    <td>@aCountry.Name</td>
+
+                    <td><a asp-action="Delete" asp-controller="Country" asp-route-id="@aCountry.Id">Delete</a></td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+else
+{
+    <h5>No data to show.</h5>
+}
+<hr />
+
+<h4>Add Country</h4>
+
+<form asp-action="Create" asp-controller="Country" method="post">
+
+    <label asp-for="Country.Name"></label>
+    <input asp-for="Country.Name" />
+    <span asp-validation-for="Country.Name"></span>
+
+
+    <button>Create</button>
+    <button type="reset">Reset</button>
+
+</form>
+
+
+
+@*END OF FILE*@

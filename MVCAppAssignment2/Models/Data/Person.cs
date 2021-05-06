@@ -20,5 +20,13 @@ namespace MVCAppAssignment2.Models.Data
         [MaxLength(30)]
         public string City { get; set; }
 
+        [MaxLength(30)]
+        public string Country { get; set; }
+
+        //[ForeignKey("InCity")]
+        //public int CityId { get; set; }
+
+
+        //public City InCity { get; set; }
     }
 }

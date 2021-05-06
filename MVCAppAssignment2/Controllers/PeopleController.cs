@@ -13,6 +13,11 @@ namespace MVCAppAssignment2.Controllers
             _myService = theService;
         }
 
+
+
+        // --------------- Lets begin organizing the Web functions ---------------------------
+
+
         /// <summary>
         /// The Index page gets a Data-View-Model of all the People in a List<>.
         /// The page is totally redrawn.
@@ -22,6 +27,25 @@ namespace MVCAppAssignment2.Controllers
         public IActionResult Index()
         {
             return View(_myService.All());
+        }
+
+
+        /// <summary>
+        /// Create uses the create <form> to create a new person.
+        /// </summary>
+        /// <param name="theModel">The data model containg a person.</param>
+        /// <returns>Return to Index page with all the People in the Data Model.</returns>
+        [HttpPost]
+        public IActionResult Create(People theModel)
+        {
+            if (ModelState.IsValid)
+            {
+                _myService.Add(theModel.Person);        // send up the CreatePerson class data
+                return RedirectToAction(nameof(Index)); // The RedirectToAction() method makes new requests, and URL in the
+            }   // browser's address bar is updated with the generated URL by MVC. Standard Index will load.
+
+            return View("Index", _myService.All());
+
         }
 
 
@@ -50,6 +74,8 @@ namespace MVCAppAssignment2.Controllers
         {
             return RedirectToAction(nameof(Index));
         }
+
+
 
 
         /// <summary>
@@ -82,24 +108,5 @@ namespace MVCAppAssignment2.Controllers
             return View("Index", theModel);
         }
 
-
-
-        /// <summary>
-        /// Create uses the create <form> to create a new person.
-        /// </summary>
-        /// <param name="theModel">The data model containg a person.</param>
-        /// <returns>Return to Index page with all the People in the Data Model.</returns>
-        [HttpPost]
-        public IActionResult Create(People theModel)
-        {
-            if (ModelState.IsValid)
-            {
-                _myService.Add(theModel.Person);        // send up the CreatePerson class data
-                return RedirectToAction(nameof(Index)); // The RedirectToAction() method makes new requests, and URL in the
-            }   // browser's address bar is updated with the generated URL by MVC. Standard Index will load.
-
-            return View("Index", _myService.All());
-
-        }
     }
 }

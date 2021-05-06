@@ -13,7 +13,6 @@ namespace MVCAppAssignment2
     public class Startup
     {
         public IConfiguration Configuration { get; }
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -23,18 +22,29 @@ namespace MVCAppAssignment2
         //== This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<PeopleDbContext>(options =>       // Add the DbContext to ConfigServices (as #5)
+            //--- Add the connection DbContext to ConfigServices (as #5) ----------------------
+            services.AddDbContext<PeopleDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
 
-            //==== Register the Dependency Injections to the service (as #6) ===:
-            services.AddScoped<IPeopleRepo, DatabasePeopleRepo>();          // Add dependency Injection for InterfaceService
-            //services.AddSingleton<IPeopleRepo, InMemoryPeopleRepo>();     // Keeps this in memory as long as app is running
-            services.AddScoped<IPeopleService, PeopleService>();            // The scoped only uses the limited lifespan.
+            //==== Register the Dependency Injections to the service collection (as #6) ===:
+            services.AddScoped<IPeopleService, PeopleService>();
+            services.AddScoped<ICityService, CityService>();
+            services.AddScoped<ICountryService, CountryService>();
+
+
+            services.AddScoped<IPeopleRepo, DatabasePeopleRepo>();
+            services.AddScoped<ICityRepo, DatabaseCityRepo>();
+            services.AddScoped<ICountryRepo, DatabaseCountryRepo>();
+
+
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();    // Original setup
-        }   // remove the migration with: ef migrations remove
 
+        }   // remove the migration with: ef migrations remove
+            // When any changes of the data models for the database -> make new migration!
+            // "dotnet ef migrations add"
+            // dotnet ef database update
 
 
 
@@ -51,6 +61,7 @@ namespace MVCAppAssignment2
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -71,6 +82,14 @@ namespace MVCAppAssignment2
                 endpoints.MapControllerRoute(
                     name: "AjaxHandling",
                     pattern: "{controller=AJAX}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name: "Countries",
+                    pattern: "{controller=Country}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name: "Cities",
+                    pattern: "{controller=Cities}/{action=Index}/{id?}");
             });
         }
     }

@@ -11,5 +11,8 @@ namespace MVCAppAssignment2.Models.Repo
 
         public DbSet<Person> Peoples { get; set; }  // This is the entry we will use to use the database (as in #2)
 
+        public DbSet<City> Cities { get; set; }
+
+        public DbSet<Country> Countries { get; set; }
     }
 }

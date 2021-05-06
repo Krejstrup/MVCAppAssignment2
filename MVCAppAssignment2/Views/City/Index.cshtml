@@ -1,0 +1,60 @@
+﻿@model Cities
+
+@{
+    ViewData["Title"] = "Create Cities";
+}
+
+<h1>City Database</h1>
+
+@if (Model.CityList.Count > 0)     // Lets start checking the Model data. Kan hela Model vara null förresten??
+{
+    <div id="ListContainer">
+        @*===THE OLD HTML TABLE TRICK===*@
+        <table id="ListList">
+            <tr>
+                <th>Name of City</th>
+                <th>Country</th>
+                <th>Action</th>
+            </tr>
+            @foreach (City aCity in Model.CityList)
+            {
+                <tr>
+                    <td>@aCity.Name</td>
+                    <td>@Model.CountryList.Find(m => m.Id == aCity.CountryId).Name</td>
+                    <td><a asp-action="Delete" asp-controller="City" asp-route-id="@aCity.Id">Delete</a></td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+else
+{
+    <h5>No data to show.</h5>
+}
+<hr />
+
+<h4>Add City</h4>
+
+<form asp-action="Create" asp-controller="City" method="post">
+
+    <label asp-for="City.Name"></label>
+    <input asp-for="City.Name" />
+    <span asp-validation-for="City.Name"></span>
+
+    <label asp-for="CountryId"></label>    @* eller CountryId *@
+    <select asp-for="CountryId">
+
+        @foreach (Country aCountry in Model.CountryList)
+        {
+            <option value="@aCountry.Id">@aCountry.Name</option>
+
+        }
+
+
+    </select>
+    <span asp-validation-for="CountryId"></span>
+
+    <button>Create</button>
+    <button type="reset">Reset</button>
+
+</form>

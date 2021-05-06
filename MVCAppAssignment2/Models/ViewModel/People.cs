@@ -15,6 +15,10 @@ namespace MVCAppAssignment2.Models.ViewModel
         [Display(Name = "List of Persons")]
         public List<Person> PersonList { get; set; }
 
+        [Display(Name = "List of Cities")]
+        public List<City> CityList { get; set; }
+
+
         [Display(Name = "A Person")]
         public CreatePerson Person { get; set; }
 
@@ -24,10 +28,13 @@ namespace MVCAppAssignment2.Models.ViewModel
 
         /// <summary>
         /// Constructor that creates a new empty list of persons.
+        /// A list of Cities is also used. When used, go through all persons
+        /// and pick the cities included to put in this list.
         /// </summary>
         public People()
         {
             PersonList = new List<Person>();
+            CityList = new List<City>();
             Person = new CreatePerson();
         }
 

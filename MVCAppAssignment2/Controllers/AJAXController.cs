@@ -11,11 +11,18 @@ namespace MVCAppAssignment2.Controllers
     public class AJAXController : Controller
     {
         private readonly IPeopleService _myService;
+        private readonly ICityService _myCityService;
+        private readonly ICountryService _myCountryService;
 
-        public AJAXController(IPeopleService theService)//constuctor injection
+        public AJAXController(IPeopleService theService, ICityService aCityService, ICountryService aCountryService)//constuctor injection
         {
             _myService = theService;
+            _myCityService = aCityService;
+            _myCountryService = aCountryService;
         }
+
+
+
 
         /// <summary>
         /// Index loads the entire page with a view.
@@ -53,6 +60,7 @@ namespace MVCAppAssignment2.Controllers
 
             if (onePerson != null)
             {
+
                 return PartialView("_OnePersonPartial", onePerson);
             }
             return NotFound();

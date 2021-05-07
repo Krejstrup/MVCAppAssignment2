@@ -43,7 +43,7 @@ namespace MVCAppAssignment2
 
         }   // remove the migration with: ef migrations remove
             // When any changes of the data models for the database -> make new migration!
-            // "dotnet ef migrations add"
+            // dotnet ef migrations add
             // dotnet ef database update
 
 

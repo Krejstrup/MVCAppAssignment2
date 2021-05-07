@@ -29,9 +29,9 @@ namespace MVCAppAssignment2.Controllers
         public IActionResult Index()
         {
             People allThePeopleAndCities = _myService.All();
-            Cities everCity = _myCityService.All();
-            allThePeopleAndCities.CityList = everCity.CityList; // Used for creating a New Person
-
+            //Cities everCity = _myCityService.All();
+            //allThePeopleAndCities.CityList = everCity.CityList;
+            allThePeopleAndCities.CityList = _myCityService.All().CityList; // Used for creating a New Person
             return View(allThePeopleAndCities);
         }
 

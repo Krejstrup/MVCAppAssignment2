@@ -12,15 +12,16 @@
         <table id="ListList">
             <tr>
                 <th>Name of Country</th>
-
+                <th>Number of Cities Associated</th>
                 <th>Action</th>
             </tr>
             @foreach (Country aCountry in Model.CountryList)
             {
                 <tr>
                     <td>@aCountry.Name</td>
-
+                    <td>@aCountry.Cities.Count</td>
                     <td><a asp-action="Delete" asp-controller="Country" asp-route-id="@aCountry.Id">Delete</a></td>
+                    @*<td><a asp-action="Details" asp-controller="Country" asp-route-id="@aCountry.Id">Details</a></td>*@
                 </tr>
             }
         </table>

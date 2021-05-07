@@ -17,6 +17,7 @@ namespace MVCAppAssignment2.Controllers
         }
 
 
+        //------------ Now handle the frontend stuff -----------------------------
 
         // GET: CityController
         public IActionResult Index()
@@ -50,11 +51,11 @@ namespace MVCAppAssignment2.Controllers
                 CreateCity theCity = theModel.City;
                 theCity.CountryId = theModel.CountryId;
 
-                _myService.Add(theCity);        // set up the CreateCountry class data to database
+                City newCity = _myService.Add(theCity);        // set up the CreateCountry class data to database
                 Country actualCountry = _myCountryService.FindBy(theModel.CountryId);
                 // Nu har jag skapat en stad och hämtat landet det ligger i.
                 // Stoppa in staden i landet:
-                //actualCountry.Cities.Add(theCity);
+                //actualCountry.Cities.Add(newCity);
                 // Uppdatera repot med det uppdaterade landet:
                 //_myCountryService.Edit(theModel.CountryId, actualCountry);
 

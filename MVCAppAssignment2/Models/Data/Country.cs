@@ -13,6 +13,8 @@ namespace MVCAppAssignment2.Models.Data
         [MaxLength(30)]
         public string Name { get; set; }
 
+
+        // Many:
         public List<City> Cities { get; set; }
     }
 }

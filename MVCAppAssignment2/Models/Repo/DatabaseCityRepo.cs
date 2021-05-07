@@ -1,4 +1,5 @@
-﻿using MVCAppAssignment2.Models.Data;
+﻿using Microsoft.EntityFrameworkCore;    // to use the Include() keyword for Eager Loading
+using MVCAppAssignment2.Models.Data;
 using MVCAppAssignment2.Models.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -51,7 +52,7 @@ namespace MVCAppAssignment2.Models.Repo
 
         public City Read(int id)
         {
-            return _myDbContext.Cities.SingleOrDefault(row => row.Id == id);
+            return _myDbContext.Cities.Include(country => country.Country).SingleOrDefault(row => row.Id == id);
         }
 
         public List<City> Read()

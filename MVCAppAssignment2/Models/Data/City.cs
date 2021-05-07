@@ -17,9 +17,10 @@ namespace MVCAppAssignment2.Models.Data
 
         public List<Person> People { get; set; }
 
-        [ForeignKey("Country")]
+        [ForeignKey("Country")]     // With this key we will tell the Eager loding where to place the data
         public int CountryId { get; set; }
 
+        // One
         public Country Country { get; set; }
     }
 }

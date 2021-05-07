@@ -30,7 +30,7 @@ namespace MVCAppAssignment2.Controllers
         {
             People allThePeopleAndCities = _myService.All();
             Cities everCity = _myCityService.All();
-            allThePeopleAndCities.CityList = everCity.CityList;
+            allThePeopleAndCities.CityList = everCity.CityList; // Used for creating a New Person
 
             return View(allThePeopleAndCities);
         }

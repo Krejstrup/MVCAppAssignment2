@@ -1,4 +1,5 @@
-﻿using MVCAppAssignment2.Models.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using MVCAppAssignment2.Models.Data;
 using MVCAppAssignment2.Models.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -48,13 +49,13 @@ namespace MVCAppAssignment2.Models.Repo
 
         public Person Read(int id)
         {
-            return _myDbContext.Peoples.SingleOrDefault(row => row.Id == id);
+            return _myDbContext.Peoples.Include(place => place.InCity).SingleOrDefault(row => row.Id == id);
         }
 
 
         public List<Person> Read()
         {
-            return _myDbContext.Peoples.ToList();
+            return _myDbContext.Peoples.Include(place => place.InCity).ToList();
         }
 
 

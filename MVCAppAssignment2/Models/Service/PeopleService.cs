@@ -1,4 +1,5 @@
 ﻿using MVCAppAssignment2.Models.Data;
+using MVCAppAssignment2.Models.Repo;
 using MVCAppAssignment2.Models.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,8 @@ namespace MVCAppAssignment2.Models.Service
         {
             _memoryList = theRepo;
         }
+
+
 
 
         /// <summary>

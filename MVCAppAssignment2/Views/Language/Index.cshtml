@@ -1,0 +1,98 @@
+﻿@model Languages
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Language Page</h2>
+
+@if (Model.LanguageList.Count == 0)
+{
+    <h4>No Languages in list. Create Laguage below.</h4>
+}
+else
+{
+
+    <table>
+        <thead>
+            <tr>
+                <th>Language</th>
+                <th>Id</th>
+                <th>Action</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @foreach (Language aLang in Model.LanguageList)
+            {
+                <tr>
+                    <td>@aLang.Name</td>
+                    <td>@aLang.Id</td>
+                    <td><a asp-action="Delete" asp-controller="Language" asp-route-id="@aLang.Id">Delete</a></td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}
+
+<hr />
+<h4>Persons accociated to this language.</h4>
+
+@if (Model.PersonList.Count == 0)
+{
+    <p>No persons assosiated with this language. Add language to a person.</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Language</th>
+                <th>Id</th>
+                <th>Action</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @foreach (Person aPerson in Model.PersonList)
+            {
+                <tr>
+                    <td>@aPerson.FirstName</td>
+                    <td>@aPerson.LastName</td>
+                    <td><a asp-action="PersonDel" asp-controller="Language" asp-route-id="@aPerson.Id">Dont Delete yet!</a></td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}
+
+<hr />
+
+<h4>Add Language</h4>
+
+<form asp-action="Create" asp-controller="Language" method="post">
+
+    <label asp-for="Language.Name"></label>
+    <input asp-for="Language.Name" />
+    <span asp-validation-for="Language.Name"></span>
+
+    <label asp-for="LanguageId"></label>    @* eller CountryId *@
+    <select asp-for="LanguageId">
+
+        @foreach (Language aLanguage in Model.LanguageList)
+        {
+            <option value="@aLanguage.Id">@aLanguage.Name</option>
+
+        }
+
+
+    </select>
+    <span asp-validation-for="LanguageId"></span>
+
+    <button>Create</button>
+    <button type="reset">Reset</button>
+
+</form>
+

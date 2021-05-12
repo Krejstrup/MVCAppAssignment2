@@ -16,8 +16,8 @@ namespace MVCAppAssignment2.Models.ViewModel
         public CreateCity City { get; set; }
 
         [Display(Name = "Filter")]
-        public string filter { get; set; }  // My first idea was to use the CreatePerson, and to use a <form> as filter.
-                                            // I have to have the time for this implementation too...
+        public string filter { get; set; }
+
         public int CountryId { get; set; }
 
 

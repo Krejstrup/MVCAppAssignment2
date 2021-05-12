@@ -10,7 +10,7 @@ namespace MVCAppAssignment2.Models.ViewModel
     /// Fetch the data from the InMemoryPeopleRepro.
     /// filter is to be able to filtering the listing in the View.
     /// </summary>
-    public class People             //ViewModel
+    public class People  //-------- This is a ViewModel -----------------
     {
         [Display(Name = "List of Persons")]
         public List<Person> PersonList { get; set; }
@@ -18,14 +18,17 @@ namespace MVCAppAssignment2.Models.ViewModel
         [Display(Name = "List of Cities")]
         public List<City> CityList { get; set; }
 
-        public int CityId { get; set; }
 
         [Display(Name = "A Person")]
         public CreatePerson Person { get; set; }
 
         [Display(Name = "Filter")]
-        public string filter { get; set; }  // My first idea was to use the CreatePerson, and to use a <form> as filter.
-                                            // I have to have the time for this implementation too...
+        public string filter { get; set; }
+
+
+        public int TheTown { get; set; }    // This was previously "public int CityId { get; set; }"
+
+
 
         /// <summary>
         /// Constructor that creates a new empty list of persons.

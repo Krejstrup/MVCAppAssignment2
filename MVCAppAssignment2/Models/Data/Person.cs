@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVCAppAssignment2.Models.Data
@@ -18,9 +19,14 @@ namespace MVCAppAssignment2.Models.Data
         [MaxLength(30)]
         public string Phone { get; set; }
 
-        [ForeignKey("InCity")]
+
+        [ForeignKey("InCity")]     // With this key we will tell the Eager loding where to place the data
         public int CityId { get; set; }
 
-        public City InCity { get; set; }
+        public City InCity { get; set; }                // One
+
+
+
+        public List<PersonLanguage> PersonLanguages { get; set; }   // To the Assossiation table
     }
 }

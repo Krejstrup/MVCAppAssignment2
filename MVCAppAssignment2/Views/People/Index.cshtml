@@ -6,56 +6,8 @@
 
 <h2>People</h2>
 
-@*@if (Model.PersonList.Count > 0)     // Lets start checking the Model data. Kan hela Model vara null förresten??
-    {
-        <div id="ListContainer">      //===THE OLD HTML TABLE TRICK===
-            <table id="ListList">
-                <tr>
-                    <th>First name</th>
-                    <th>Last name</th>
-                    <th>Phone nr.</th>
-                    <th>City</th>
-                    <th>Action</th>
-                </tr>
-                @foreach (Person aPerson in Model.PersonList)
-                {
-                    <tr>
-                        <td>@aPerson.FirstName</td>
-                        <td>@aPerson.LastName</td>
-                        <td>@aPerson.Phone</td>
-                        <td>@aPerson.City</td>
-                        <td><a asp-action="Remove" asp-controller="People" asp-route-id="@aPerson.Id">Remove</a></td>
-                    </tr>
-                }
-            </table>
-        </div>
-    }
-    else
-    {
-        <h5>No data to show.</h5>
-    }
-    <hr />*@
-
 @if (Model.PersonList.Count > 0)
 {
-
-    @*<div class="row">             //===THE BOOTSTRAP LOOSE TABLE TRICK===
-            <div class="col-3">
-                <h5>First Name</h5>
-            </div>
-            <div class="col-3">
-                <h5>Last Name</h5>
-            </div>
-            <div class="col-3">
-                <h5>Phone</h5>
-            </div>
-            <div class="col-2">
-                <h5>City</h5>
-            </div>
-            <div class="col-1">
-                <h5>Action</h5>
-            </div>
-        </div>*@
 
     @foreach (Person aPerson in Model.PersonList)  //===THE BOOTSTRAP CARDS TRICK===
     {
@@ -72,6 +24,8 @@ else
 
 
 <hr />
+
+
 <h4>Filter the list</h4>
 <form asp-action="Filter" asp-controller="People" method="post">
     <label asp-for="filter"></label>
@@ -98,21 +52,15 @@ else
     <input asp-for="Person.Phone" />
     <span asp-validation-for="Person.Phone"></span>
 
-    @*<label asp-for="Person.CityId"></label>
-        <input asp-for="Person.CityId" />
-        <span asp-validation-for="Person.CityId"></span>*@
-
-
-
-    <label asp-for="CityId"></label>    @* eller CountryId *@
-    <select asp-for="CityId">
+    <label asp-for="TheTown"></label>
+    <select asp-for="TheTown">
         @foreach (City aCity in Model.CityList)
         {
             <option value="@aCity.Id">@aCity.Name</option>
 
         }
     </select>
-    <span asp-validation-for="CityId"></span>
+    <span asp-validation-for="TheTown"></span>
 
 
     <button>Create</button>

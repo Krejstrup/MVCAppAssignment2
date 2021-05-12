@@ -22,6 +22,10 @@ namespace MVCAppAssignment2.Models.Repo
 
         // == It's time for the C.R.U.D. implementations : ======
 
+
+
+        //--------------Create object in database------------------------
+
         public Person Create(CreatePerson aPerson)
         {
             Person aNewPerson = new Person()
@@ -47,16 +51,22 @@ namespace MVCAppAssignment2.Models.Repo
         }
 
 
+        //-------------Read from database--------------------------------------
+
+        public List<Person> Read()
+        {
+            return _myDbContext.Peoples.Include(place => place.InCity).ToList();
+        }
+
+
         public Person Read(int id)
         {
             return _myDbContext.Peoples.Include(place => place.InCity).SingleOrDefault(row => row.Id == id);
         }
 
 
-        public List<Person> Read()
-        {
-            return _myDbContext.Peoples.Include(place => place.InCity).ToList();
-        }
+
+        //--------------Update database-----------------------------------------
 
 
         public Person Update(Person aPerson)
@@ -85,6 +95,9 @@ namespace MVCAppAssignment2.Models.Repo
             return newPerson;
 
         }
+
+
+        //-----------Delete Database object-------------------------------------------
 
 
         public bool Delete(Person aPerson)

@@ -1,24 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVCAppAssignment2.Models.Data
 {
-    public class Country
+    public class Language
     {
 
         [Key]
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(30)]
+        [MaxLength(20)]
         public string Name { get; set; }
 
 
-        public int CityId { get; set; }
 
+        public List<PersonLanguage> PersonLanguages { get; set; }   // To the Assossiation table
 
-        [ForeignKey("CityId")]
-        public List<City> Cities { get; set; }  // Many
     }
 }

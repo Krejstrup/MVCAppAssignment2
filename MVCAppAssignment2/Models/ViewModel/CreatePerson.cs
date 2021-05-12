@@ -22,7 +22,5 @@ namespace MVCAppAssignment2.Models.ViewModel
         [Display(Name = "CityId")]
         public int CityId { get; set; }
 
-
-
     }
 }

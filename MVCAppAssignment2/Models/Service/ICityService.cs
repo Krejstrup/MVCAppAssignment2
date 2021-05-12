@@ -8,11 +8,7 @@ namespace MVCAppAssignment2.Models.Service
 
         public City Add(CreateCity aCity);
 
-        //public City Add(CreateCity aCity, int aCountryId);
-
         public Cities All();
-
-        //public Cities FindBy(City search);
 
         public City FindBy(int id);
 

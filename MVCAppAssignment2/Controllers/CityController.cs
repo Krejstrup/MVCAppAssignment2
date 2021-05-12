@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MVCAppAssignment2.Models.Data;
 using MVCAppAssignment2.Models.Service;
 using MVCAppAssignment2.Models.ViewModel;
 
@@ -47,17 +46,10 @@ namespace MVCAppAssignment2.Controllers
 
             if (ModelState.IsValid)
             {
-
                 CreateCity theCity = theModel.City;
                 theCity.CountryId = theModel.CountryId;
 
-                City newCity = _myService.Add(theCity);        // set up the CreateCountry class data to database
-                Country actualCountry = _myCountryService.FindBy(theModel.CountryId);
-                // Nu har jag skapat en stad och hämtat landet det ligger i.
-                // Stoppa in staden i landet:
-                //actualCountry.Cities.Add(newCity);
-                // Uppdatera repot med det uppdaterade landet:
-                //_myCountryService.Edit(theModel.CountryId, actualCountry);
+                _myService.Add(theCity);        // set up the CreateCountry class data to database
 
                 return RedirectToAction(nameof(Index)); // The RedirectToAction() method makes new requests, and URL in the
             }   // browser's address bar is updated with the generated URL by MVC. Standard Index will load.

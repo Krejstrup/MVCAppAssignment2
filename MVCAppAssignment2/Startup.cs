@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MVCAppAssignment2.Models.Data;
 using MVCAppAssignment2.Models.Repo;
 using MVCAppAssignment2.Models.Service;
 
@@ -31,11 +30,13 @@ namespace MVCAppAssignment2
             services.AddScoped<IPeopleService, PeopleService>();
             services.AddScoped<ICityService, CityService>();
             services.AddScoped<ICountryService, CountryService>();
+            services.AddScoped<ILanguageService, LanguageService>();
 
 
             services.AddScoped<IPeopleRepo, DatabasePeopleRepo>();
             services.AddScoped<ICityRepo, DatabaseCityRepo>();
             services.AddScoped<ICountryRepo, DatabaseCountryRepo>();
+            services.AddScoped<ILanguageRepo, DatabaseLanguageRepo>();
 
 
 

@@ -46,7 +46,7 @@ namespace MVCAppAssignment2.Controllers
         {
             if (ModelState.IsValid)
             {
-                theModel.Person.CityId = theModel.CityId;
+                theModel.Person.CityId = theModel.TheTown;// CityId;
                 _myService.Add(theModel.Person);        // send up the CreatePerson class data
                 return RedirectToAction(nameof(Index)); // The RedirectToAction() method makes new requests, and URL in the
             }   // browser's address bar is updated with the generated URL by MVC. Standard Index will load.

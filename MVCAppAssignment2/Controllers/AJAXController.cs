@@ -3,8 +3,6 @@ using MVCAppAssignment2.Models.Data;
 using MVCAppAssignment2.Models.Service;
 using MVCAppAssignment2.Models.ViewModel;
 
-
-
 namespace MVCAppAssignment2.Controllers
 {
 
@@ -13,12 +11,14 @@ namespace MVCAppAssignment2.Controllers
         private readonly IPeopleService _myPService;
         private readonly ICityService _myCityService;
         private readonly ICountryService _myCountryService;
+        private readonly ILanguageService _myLanguageService;
 
-        public AJAXController(IPeopleService theService, ICityService aCityService, ICountryService aCountryService)//constuctor injection
+        public AJAXController(IPeopleService theService, ICityService aCityService, ICountryService aCountryService, ILanguageService aLangService)//constuctor injection
         {
             _myPService = theService;
             _myCityService = aCityService;
             _myCountryService = aCountryService;
+            _myLanguageService = aLangService;
         }
 
 
@@ -77,16 +77,18 @@ namespace MVCAppAssignment2.Controllers
         /// <param name="Id">The Id pointing out the person to open about info with.</param>
         /// <returns>Returns the partial view of a personal Card info.</returns>
         [HttpPost]
-        public IActionResult About(int Id) // WORKS!!
+        public IActionResult Edit(int Id) // WORKS!!
         {
             Person onePerson = _myPService.FindBy(Id);
 
             if (onePerson != null)
             {
-                return PartialView("_PersonAboutPartial", onePerson);
+                return PartialView("_PersonEditPartial", onePerson);
             }
             return PartialView("_AllPersonsPartial", _myPService.All());
         }
+
+
 
         /// <summary>
         /// NotAbout closes the info partial view for the person clicked. The person partial view is replaced.
@@ -94,13 +96,24 @@ namespace MVCAppAssignment2.Controllers
         /// <param name="Id">The Id pointing out the person view to replace About with.</param>
         /// <returns>Returns the standard partial view of a person.</returns>
         [HttpPost]
-        public IActionResult NotAbout(int Id) // WORKS!!
+        public IActionResult CloseEdit(int Id) // WORKS!!
         {
             Person onePerson = _myPService.FindBy(Id);
 
             if (onePerson != null)
             {
-                return PartialView("_PersonPartial", onePerson);
+                EditPerson returnPerson = new EditPerson()
+                {
+                    Person = onePerson
+                };
+
+                // Now fetch and refill the lists of cities and languages before returning.
+                Cities getCities = _myCityService.All();
+                returnPerson.CityList = getCities.CityList;
+                Languages getLanguages = _myLanguageService.All();
+                returnPerson.LanguageList = getLanguages.LanguageList;
+
+                return PartialView("_PersonPartial", returnPerson);
             }
             return PartialView("_AllPersonsPartial", _myPService.All());
         }
@@ -137,7 +150,7 @@ namespace MVCAppAssignment2.Controllers
         /// <param name="aPerson">The Person to be edited.</param>
         /// <returns>Returns Ok (200) and data for the person Id on success, otherwise BadRequest or NotFound (404)</returns>
         [HttpPost]
-        public IActionResult Edit(Person aPerson) // WORKS NOT QUITE YET!!
+        public IActionResult EditPerson(Person aPerson) // WORKS NOT QUITE YET!!
         {
 
             if (aPerson == null)
@@ -152,5 +165,27 @@ namespace MVCAppAssignment2.Controllers
 
             return BadRequest();
         }
+
+
+
+        [HttpPost]
+        public IActionResult EditFname(int Id, EditPerson changePerson) // WORKS NOT QUITE YET!!
+        {
+            Person aPerson = _myPService.FindBy(Id);
+
+            if (aPerson == null)
+            {
+                return NotFound();
+            }
+
+            if (_myPService.Edit(aPerson.Id, changePerson) != null)
+            {
+                return Ok(aPerson.Id);
+            }
+
+            return BadRequest();
+        }
+
+
     }
 }

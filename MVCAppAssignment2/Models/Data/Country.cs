@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVCAppAssignment2.Models.Data
 {
@@ -15,10 +14,6 @@ namespace MVCAppAssignment2.Models.Data
         public string Name { get; set; }
 
 
-        public int CityId { get; set; }
-
-
-        [ForeignKey("CityId")]
         public List<City> Cities { get; set; }  // Many
     }
 }

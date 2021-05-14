@@ -7,11 +7,12 @@ namespace MVCAppAssignment2.Models.ViewModel
 
         [Required]
         [StringLength(30, MinimumLength = 2)]
-        [Display(Name = "City Name")]
+        [Display(Name = "Language Name")]
         public string Name { get; set; }
 
 
-        public int PersonId { get; set; }
+
+        public CreateLanguage() { }
 
     }
 }

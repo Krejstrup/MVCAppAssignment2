@@ -24,17 +24,16 @@ namespace MVCAppAssignment2.Controllers
         }
 
 
+
+
         [HttpGet]
         public IActionResult AllCountries() // WORKS?????????????????
         {
-            // Send down all the persons in this Model
+            // This is copied from the PersonCOntroller and not yet done - persons in this Model
             Countries everyCountry = _myService.All(); // Använd en ViewModel
 
             return PartialView("_AllPersonsPartial", everyCountry);
         }
-
-
-
 
 
 
@@ -53,6 +52,9 @@ namespace MVCAppAssignment2.Controllers
             return View("Index", _myService.All());
 
         }
+
+
+
 
 
 

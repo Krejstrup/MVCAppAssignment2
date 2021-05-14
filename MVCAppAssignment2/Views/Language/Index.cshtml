@@ -1,10 +1,10 @@
 ﻿@model Languages
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Language Listing";
 }
 
-<h2>Language Page</h2>
+<h2>List of Languages</h2>
 
 @if (Model.LanguageList.Count == 0)
 {
@@ -12,60 +12,30 @@
 }
 else
 {
-
-    <table>
-        <thead>
-            <tr>
-                <th>Language</th>
-                <th>Id</th>
-                <th>Action</th>
-            </tr>
-
-        </thead>
-        <tbody>
-            @foreach (Language aLang in Model.LanguageList)
-            {
+    <div id="ListContainer">
+        <table id="ListList">
+            <thead>
                 <tr>
-                    <td>@aLang.Name</td>
-                    <td>@aLang.Id</td>
-                    <td><a asp-action="Delete" asp-controller="Language" asp-route-id="@aLang.Id">Delete</a></td>
+                    <th>Language</th>
+                    <th>Language Id</th>
+                    <th>Persons using</th>
+                    <th>Action</th>
                 </tr>
-            }
-        </tbody>
+            </thead>
+            <tbody>
+                @foreach (Language aLang in Model.LanguageList)
+                {
+                    <tr>
+                        <td>@aLang.Name</td>
+                        <td>@aLang.Id</td>
+                        <td>@aLang.PersonLanguages.Count</td>
+                        <td><a asp-action="Delete" asp-controller="Language" asp-route-id="@aLang.Id">Delete</a></td>
+                    </tr>
+                }
 
-    </table>
-}
-
-<hr />
-<h4>Persons accociated to this language.</h4>
-
-@if (Model.PersonList.Count == 0)
-{
-    <p>No persons assosiated with this language. Add language to a person.</p>
-}
-else
-{
-    <table>
-        <thead>
-            <tr>
-                <th>Language</th>
-                <th>Id</th>
-                <th>Action</th>
-            </tr>
-
-        </thead>
-        <tbody>
-            @foreach (Person aPerson in Model.PersonList)
-            {
-                <tr>
-                    <td>@aPerson.FirstName</td>
-                    <td>@aPerson.LastName</td>
-                    <td><a asp-action="PersonDel" asp-controller="Language" asp-route-id="@aPerson.Id">Dont Delete yet!</a></td>
-                </tr>
-            }
-        </tbody>
-
-    </table>
+            </tbody>
+        </table>
+    </div>
 }
 
 <hr />
@@ -73,23 +43,11 @@ else
 <h4>Add Language</h4>
 
 <form asp-action="Create" asp-controller="Language" method="post">
+    @* Using taghelpers in this Form *@
 
-    <label asp-for="Language.Name"></label>
+    <label asp-for="Language.Name"></label> @* Using the CreateLanguage ViewModel From type Languages in Model *@
     <input asp-for="Language.Name" />
     <span asp-validation-for="Language.Name"></span>
-
-    <label asp-for="LanguageId"></label>    @* eller CountryId *@
-    <select asp-for="LanguageId">
-
-        @foreach (Language aLanguage in Model.LanguageList)
-        {
-            <option value="@aLanguage.Id">@aLanguage.Name</option>
-
-        }
-
-
-    </select>
-    <span asp-validation-for="LanguageId"></span>
 
     <button>Create</button>
     <button type="reset">Reset</button>

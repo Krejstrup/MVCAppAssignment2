@@ -14,11 +14,13 @@ namespace MVCAppAssignment2.Models.Service
     public class PeopleService : IPeopleService
     {
 
-        IPeopleRepo _memoryList;
+        IPeopleRepo _myPeopDbRepo;
+        IPersonLanguage _myPersonLanguageDbRepo;
 
-        public PeopleService(IPeopleRepo theRepo)
+        public PeopleService(IPeopleRepo theRepo, IPersonLanguage PersonLanguageDbRepo)
         {
-            _memoryList = theRepo;
+            _myPeopDbRepo = theRepo;
+            _myPersonLanguageDbRepo = PersonLanguageDbRepo;
         }
 
 
@@ -31,8 +33,29 @@ namespace MVCAppAssignment2.Models.Service
         /// <returns>Returns the newly created Person.</returns>
         public Person Add(CreatePerson addPerson)
         {
-            return _memoryList.Create(addPerson);
+            return _myPeopDbRepo.Create(addPerson);
         }
+
+
+        public PersonLanguage AddLanguageToPerson(int perId, int langId)
+        {
+            PersonLanguage theBinding = new PersonLanguage()
+            {
+                PersonId = perId,
+                LanguageId = langId
+            };
+
+            PersonLanguage thePersonLanguage = _myPersonLanguageDbRepo.Create(theBinding);
+
+            return thePersonLanguage;
+        }
+
+
+        public bool RemoveLanguageFromPerson(int perId, int langId)
+        {
+            return _myPersonLanguageDbRepo.Delete(perId, langId);
+        }
+
 
 
         /// <summary>
@@ -44,7 +67,7 @@ namespace MVCAppAssignment2.Models.Service
         {
             People theWholeList = new People();
 
-            theWholeList.PersonList = _memoryList.Read();
+            theWholeList.PersonList = _myPeopDbRepo.Read();
             return theWholeList;
         }
 
@@ -70,7 +93,7 @@ namespace MVCAppAssignment2.Models.Service
             {
                 int parseInt = 0;
                 bool isNumber = false;
-                foreach (Person memPers in _memoryList.Read())
+                foreach (Person memPers in _myPeopDbRepo.Read())
                 {
                     isNumber = Int32.TryParse(lookup, out parseInt);
                     if (lookup == memPers.FirstName)
@@ -94,7 +117,7 @@ namespace MVCAppAssignment2.Models.Service
             }
             else if (search.PersonList.Count > 0)       // Proceed looking for a Person matching a form-input:
             {
-                foreach (Person memPers in _memoryList.Read())
+                foreach (Person memPers in _myPeopDbRepo.Read())
                 {
                     foreach (Person searchPers in search.PersonList)
                     {
@@ -130,7 +153,7 @@ namespace MVCAppAssignment2.Models.Service
         /// <returns>Retuns the found person or null if person not found.</returns>
         public Person FindBy(int id)
         {
-            foreach (Person aPerson in _memoryList.Read())
+            foreach (Person aPerson in _myPeopDbRepo.Read())
             {
                 if (aPerson.Id == id)
                 {
@@ -139,6 +162,8 @@ namespace MVCAppAssignment2.Models.Service
             }
             return null;
         }
+
+
 
 
         /// <summary>
@@ -154,15 +179,50 @@ namespace MVCAppAssignment2.Models.Service
             Person aPerson = FindBy(id);
             if (aPerson != null)
             {
-                aPerson.FirstName = person.FirstName;
-                aPerson.LastName = person.LastName;
-                aPerson.Phone = person.Phone;
-                aPerson.CityId = person.CityId;
-                //aPerson.City = person.City; we are not using this string identity for City anymore!
+                return null;
             }
 
-            return aPerson;
+            aPerson.FirstName = person.FirstName;
+            aPerson.LastName = person.LastName;
+            aPerson.Phone = person.Phone;
+            aPerson.CityId = person.CityId;
+            aPerson.InCity = person.InCity;
+            aPerson.PersonLanguages = person.PersonLanguages;
+
+            return _myPeopDbRepo.Update(aPerson);
         }
+
+        /// <summary>
+        /// Edit (id Person) uses the id to lookup the right person and then
+        /// updates the data from the data template.
+        /// The data is not checked so empty fields will overwrite data in person!
+        /// </summary>
+        /// <param name="id">The unique id for the person to lookup.</param>
+        /// <param name="person">The data that the person should be updated with.</param>
+        /// <returns>Returns the person or null if not found.</returns>
+        public Person Edit(int id, EditPerson person)
+        {
+            Person aPerson = FindBy(id);
+            if (aPerson != null)
+            {
+                return null;
+            }
+
+            aPerson = person.Person;
+
+            return _myPeopDbRepo.Update(aPerson);
+        }
+
+        public bool Edit()  //???????????
+        {
+            Person newPerson = new Person();
+            return true;
+        }
+
+
+
+
+
 
         /// <summary>
         /// Remove will delete the person maching the id, sent in as parameter, from the memory list.
@@ -172,8 +232,10 @@ namespace MVCAppAssignment2.Models.Service
         public bool Remove(int id)
         {
             Person aPerson = FindBy(id);
-            return _memoryList.Delete(aPerson);
+            return _myPeopDbRepo.Delete(aPerson);
         }
+
+
 
         /// <summary>
         /// This is an overload for the RemoveBy Id. The former looks up the person, in this overload
@@ -185,7 +247,7 @@ namespace MVCAppAssignment2.Models.Service
         {
             if (aPerson != null)
             {
-                return _memoryList.Delete(aPerson);
+                return _myPeopDbRepo.Delete(aPerson);
             }
             else
             {

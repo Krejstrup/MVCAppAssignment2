@@ -23,7 +23,7 @@ namespace MVCAppAssignment2.Models.Data
         [ForeignKey("InCity")]     // With this key we will tell the Eager loding where to place the data
         public int CityId { get; set; }
 
-        public City InCity { get; set; }                // One
+        public City InCity { get; set; }    // One
 
 
 

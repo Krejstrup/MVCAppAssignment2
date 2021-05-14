@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MVCAppAssignment2.Models.Data;
 using MVCAppAssignment2.Models.Service;
 using MVCAppAssignment2.Models.ViewModel;
 
@@ -7,11 +8,11 @@ namespace MVCAppAssignment2.Controllers
     public class CityController : Controller
     {
 
-        private readonly ICityService _myService;
+        private readonly ICityService _myCityService;
         private readonly ICountryService _myCountryService;
         public CityController(ICityService theService, ICountryService moreService)  // Constuctor Dependency Injection
         {
-            _myService = theService;
+            _myCityService = theService;
             _myCountryService = moreService;
         }
 
@@ -21,9 +22,9 @@ namespace MVCAppAssignment2.Controllers
         // GET: CityController
         public IActionResult Index()
         {
-            Cities allCities = _myService.All();
-            allCities.CountryList = _myCountryService.All().CountryList;
-
+            Cities allCities = _myCityService.All();
+            allCities.CountryList = _myCountryService.All().CountryList;    // To get the "parent" names of Countries
+                                                                            // Where are our List of People??
             return View(allCities);
         }
 
@@ -47,14 +48,17 @@ namespace MVCAppAssignment2.Controllers
             if (ModelState.IsValid)
             {
                 CreateCity theCity = theModel.City;
-                theCity.CountryId = theModel.CountryId;
 
-                _myService.Add(theCity);        // set up the CreateCountry class data to database
+                City newCity = _myCityService.Add(theCity); // We will get a new City object with working Id from this
+                Country newCountry = _myCountryService.FindBy(theModel.City.CountryId);
+                newCountry.Cities.Add(newCity); // and update this to the database
+                _myCountryService.Edit(theModel.City.CountryId, newCountry);
+
 
                 return RedirectToAction(nameof(Index)); // The RedirectToAction() method makes new requests, and URL in the
             }   // browser's address bar is updated with the generated URL by MVC. Standard Index will load.
 
-            return View("Index", _myService.All());
+            return View("Index", _myCityService.All());
 
         }
 
@@ -92,7 +96,7 @@ namespace MVCAppAssignment2.Controllers
         // GET: CityController/Delete/5
         public IActionResult Delete(int id)
         {
-            _myService.Remove(id);
+            _myCityService.Remove(id);
             return RedirectToAction(nameof(Index));
         }
 

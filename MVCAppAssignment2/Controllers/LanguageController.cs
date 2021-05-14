@@ -19,6 +19,7 @@ namespace MVCAppAssignment2.Controllers
 
 
 
+        //-----------View---------------------------------------------------
 
         [HttpGet]
         public IActionResult Index()
@@ -46,13 +47,13 @@ namespace MVCAppAssignment2.Controllers
         // POST: LanguageController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Language inLanguage)
+        public IActionResult Create(Languages inLanguage)
         {
             if (ModelState.IsValid)
             {
                 CreateLanguage newLanguage = new CreateLanguage()
                 {
-                    Name = inLanguage.Name
+                    Name = inLanguage.Language.Name
                 };
 
                 _myLangService.Add(newLanguage);
@@ -98,7 +99,7 @@ namespace MVCAppAssignment2.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //--------Should we be able to remove a parson from this view??----------------
+        //--------Should we be able to remove a person from this view??----------------
         public IActionResult PersonDel(Person thePerson)
         {
             // Remove one of the persons to this language here?? 

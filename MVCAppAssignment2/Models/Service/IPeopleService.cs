@@ -8,6 +8,10 @@ namespace MVCAppAssignment2.Models.Service
     {
         public Person Add(CreatePerson person);
 
+        public PersonLanguage AddLanguageToPerson(int perId, int langId);
+
+        public bool RemoveLanguageFromPerson(int perId, int langId);
+
         public People All();
 
         public People FindBy(People search);
@@ -16,6 +20,7 @@ namespace MVCAppAssignment2.Models.Service
 
         public Person Edit(int id, Person person);
 
+        public Person Edit(int id, EditPerson person);
         public bool Remove(int id);
 
 

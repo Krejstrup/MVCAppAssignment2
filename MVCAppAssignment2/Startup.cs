@@ -37,6 +37,7 @@ namespace MVCAppAssignment2
             services.AddScoped<ICityRepo, DatabaseCityRepo>();
             services.AddScoped<ICountryRepo, DatabaseCountryRepo>();
             services.AddScoped<ILanguageRepo, DatabaseLanguageRepo>();
+            services.AddScoped<IPersonLanguage, DatabasePersonLanguageRepo>();
 
 
 

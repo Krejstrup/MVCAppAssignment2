@@ -15,11 +15,10 @@ namespace MVCAppAssignment2.Models.Data
         public string Name { get; set; }
 
 
-        public int PeopleId { get; set; }
+        //public int PeopleId { get; set; }     Detta behövs inte eftersom det redan finns länk från Person!
+        //[ForeignKey("PeopleId")]     // With this key we will tell the Eager loding where to place the data
 
-        [ForeignKey("PeopleId")]     // With this key we will tell the Eager loding where to place the data
         public List<Person> Peoples { get; set; }    // Many
-
 
         public int CountryId { get; set; }
 

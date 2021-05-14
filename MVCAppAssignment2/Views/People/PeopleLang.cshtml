@@ -1,0 +1,66 @@
+﻿@model EditPerson
+@{
+    ViewData["Title"] = "PeopleLang";
+}
+
+<h3>Add Language to person</h3>
+
+<h4>Person: @Model.Person.FirstName @Model.Person.LastName</h4>
+
+<a class="btn btn-success btn-lg" asp-action="Index" asp-controller="AJAX" method="get">&lt;Back</a>
+<div id="ListContainer">
+    <table id="ListList">
+        <thead>
+            <tr>
+                <th>Language Known to @Model.Person.FirstName</th>
+                <th>Action</th>
+            </tr>
+
+        </thead>
+        <tbody>
+
+            @foreach (PersonLanguage item in Model.Person.PersonLanguages)
+            {
+                <tr>
+                    <td>@item.Language.Name </td>
+
+                    <td>
+                        @Html.ActionLink("Delete",                 // Link text
+                       "RemoveLang",                               // Action method name
+                       new { perId = Model.Person.Id, langId = item.LanguageId }, // Route arg
+                       null)                                    @*// html arg *@
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+<div id="ListContainer">
+    <table id="ListList">
+        <thead>
+            <tr>
+                <th>Language In Database</th>
+                <th>Action</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @foreach (Language item in Model.LanguageList)
+            {
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @Html.ActionLink("Add",                 // Link text
+                       "AddLang",                               // Action method name
+                       new { perId = Model.Person.Id, langId = item.Id }, // Route arg
+                       null)                                    @*// html arg *@
+                    @*<Button class="btn btn-info btn-sm" asp-for="@Model.LangId" value="@item.Id">Add</Button>*@
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

@@ -58,7 +58,9 @@ namespace MVCAppAssignment2.Models.Repo
         public List<City> Read()
         {
             //return _myDbContext.Cities.Include(row => row.CountryId).ToList();
-            return _myDbContext.Cities.ToList();
+            List<City> newListOfCities = _myDbContext.Cities.Include(cp => cp.Peoples).ToList();
+
+            return newListOfCities;
         }
 
 
@@ -66,15 +68,15 @@ namespace MVCAppAssignment2.Models.Repo
 
         public City Update(City aCity)
         {
-            City newCity = new City()
+            City theCity = Read(aCity.Id);  // Read the City to keep the tracking of the object
+
+            if (theCity == null)
             {
-                Id = aCity.Id,
-                Name = aCity.Name
-                //CountryId = aCity.CountryId
-            };
+                return null;
+            }
 
 
-            _myDbContext.Cities.Update(newCity);
+            _myDbContext.Cities.Update(aCity);
 
             int result = _myDbContext.SaveChanges();
 
@@ -83,7 +85,7 @@ namespace MVCAppAssignment2.Models.Repo
                 throw new Exception("No updates was done!");
             }
 
-            return newCity;
+            return Read(aCity.Id);
         }
 
 

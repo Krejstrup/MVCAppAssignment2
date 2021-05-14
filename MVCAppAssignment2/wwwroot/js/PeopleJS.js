@@ -23,7 +23,7 @@ deleteBtn.addEventListener("click", ajaxRemove);
 function ajaxGetAll(event) {
     if (event != null) event.preventDefault();
 
-    $.get("AJAX/AllPersons", function (data, status) {          /* goto  "Controller/Function"  */
+    $.get("AJAX/AllPersons", function (data, status) {          /* goto  "Controller=AJAX/Function=AllPersons"  */
         resultContainer.innerHTML = data;
     });
 
@@ -88,24 +88,30 @@ function ajaxRemove(element, event) {
 /// Sends the person Id to be shown to this function and pass it on to the Controller. 
 /// THe controller looks up a new partial view and returns it here.
 /// The partial person view is replacing the standard person partial view.
-function About(id, event) {
-    if (event != null) event.preventDefault();
+// anropas via:  <button onclick="Edit(@Model.Id , event)" id="@("ab"+@Model.Id)">Edit</button> = "ab18" tex
+function Edit(id, event) {
 
-    $.post("AJAX/About", { Id: id }, function (data, status) {
+    $.post("People/LangEdit", { Id: id }, function (data, status) { // Go to controller People and do this!
 
-        $("#per" + id).replaceWith(data);
+/*        $("#per" + id).replaceWith(data);*/
     });
 
 }
 
+function EditPerson(person, event) {
+
+    $.post("AJAX/EditPerson", { aPerson: person }, function (data, status) {
+        $("#edit" + id).replaceWith(data);
+    });
+
+}
 
 /// Just closes the about info partial by the same principal as for About.
 ///
-function CloseAbout(id, event) {     
-    if (event != null) event.preventDefault();
+function CloseEdit(id, event) {     // NEW FUNCTION - JUST CLOSE THE PARTIAL VIEW
 
-    $.post("AJAX/NotAbout", { Id: id }, function (data, status) {
-        $("#cab" + id).replaceWith(data);
+    $.post("AJAX/CloseEdit", { Id: id }, function (data, status) {
+        $("#edit" + id).replaceWith(data);
     });
 }
 
@@ -113,7 +119,6 @@ function CloseAbout(id, event) {
 /// And then send the person data to remove to backend.
 ///
 function DeletePerson(PersonId, event) {
-    if (event != null) console.log("Delete person");
 
     $.post("AJAX/Remove", { Id: PersonId }, function (data, status) {
 
@@ -123,6 +128,33 @@ function DeletePerson(PersonId, event) {
     }).fail(function () {
         alert("Delete failed!");
     });;
+}
+
+
+function LangAdd(LangId,event) {
+    if (event != null) event.preventDefault();
+
+
+}
+
+function LangRem(LangId, event) {
+    if (event != null) event.preventDefault();
+
+
+}
+
+function FNameChange(PersonId, thePerson) {
+
+    $.post("AJAX/EditFname", { Id: id, changePerson: thePerson }, function (data, status) {
+        $("#edit" + id).replaceWith(data);
+    });
+}
+
+function LNameChange(PersonId, thePerson) {
+
+    $.post("AJAX/EditLname", { Id: id }, function (data, status) {
+        $("#edit" + id).replaceWith(data);
+    });
 }
 
 ///====== All other bits and bytes: ===========================

@@ -1,9 +1,11 @@
 ﻿@model People
 @{
-    ViewData["Title"] = "AJAX People";
+    ViewData["Title"] = "Handle People";
 }
 
-<h3>People List</h3>
+<h3>Handle People List (Using AJAX)</h3>
+
+<hr />
 
 @*========  Lets start with showing all people =================*@
 
@@ -15,7 +17,7 @@
 
 @*=== Filter, Delete and Show all people ===*@
 
-<h4>Handle the list</h4>
+<h4>Filter and delete</h4>
 
 <input class="in" type="text" id="filterText" placeholder="Id">
 <button class="btn btn-primary btn-sm" id="filterBtn">Filter with Id</button>

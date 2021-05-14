@@ -81,13 +81,16 @@ namespace MVCAppAssignment2.Models.Repo
         /// <returns>Returns the full copy of the updated data.</returns>
         public Country Update(Country aCountry)
         {
-            Country newCountry = new Country()
-            {
-                Id = aCountry.Id,
-                Name = aCountry.Name
-            };
 
-            _myDbContext.Countries.Update(newCountry);
+            Country reReadCountry = Read(aCountry.Id);
+
+            if (reReadCountry == null)
+            {
+                return null;
+            }
+
+
+            _myDbContext.Countries.Update(aCountry);
 
             int result = _myDbContext.SaveChanges();
 
@@ -96,7 +99,7 @@ namespace MVCAppAssignment2.Models.Repo
                 throw new Exception("No updates was done!");
             }
 
-            return newCountry;
+            return Read(aCountry.Id);
         }
 
 

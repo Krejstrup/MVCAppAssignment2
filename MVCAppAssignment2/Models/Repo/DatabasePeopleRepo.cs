@@ -54,15 +54,29 @@ namespace MVCAppAssignment2.Models.Repo
         //-------------Read from database--------------------------------------
 
         public List<Person> Read()
-        {
-            return _myDbContext.Peoples.Include(place => place.InCity).ToList();
+        {   // Inkludera även Listan över språk från PersonLanguages. ThenInclude ??
+
+            List<Person> newPerson = _myDbContext.Peoples
+                                        .Include(row => row.InCity)
+                                        .Include(row => row.PersonLanguages)
+                                        .ToList();
+
+            return newPerson;
         }
 
 
         public Person Read(int id)
         {
-            return _myDbContext.Peoples.Include(place => place.InCity).SingleOrDefault(row => row.Id == id);
+            return _myDbContext.Peoples
+                .Include(place => place.InCity)
+                .Include(lan => lan.PersonLanguages)
+                    .ThenInclude(lanN => lanN.Language)
+                .SingleOrDefault(row => row.Id == id);
         }
+
+
+        //--------------Edit and update object in database-----------------------------------------
+
 
 
 
@@ -71,19 +85,15 @@ namespace MVCAppAssignment2.Models.Repo
 
         public Person Update(Person aPerson)
         {
+            Person newPerson = Read(aPerson.Id); //new Person()
 
-            Person newPerson = new Person()
+            if (newPerson == null)
             {
-                Id = aPerson.Id,
-                FirstName = aPerson.FirstName,
-                LastName = aPerson.LastName,
-                Phone = aPerson.Phone,
-                CityId = aPerson.CityId,
-                InCity = _myDbContext.Cities.SingleOrDefault(row => row.Id == aPerson.CityId)
-            };
+                return null;
+            }
 
 
-            _myDbContext.Peoples.Update(newPerson);
+            _myDbContext.Peoples.Update(aPerson);
 
             int result = _myDbContext.SaveChanges();
 
@@ -92,7 +102,7 @@ namespace MVCAppAssignment2.Models.Repo
                 throw new Exception("No updates was done!");
             }
 
-            return newPerson;
+            return aPerson;
 
         }
 

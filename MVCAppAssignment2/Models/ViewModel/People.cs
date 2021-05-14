@@ -19,6 +19,9 @@ namespace MVCAppAssignment2.Models.ViewModel
         public List<City> CityList { get; set; }
 
 
+
+
+
         [Display(Name = "A Person")]
         public CreatePerson Person { get; set; }
 
@@ -26,7 +29,7 @@ namespace MVCAppAssignment2.Models.ViewModel
         public string filter { get; set; }
 
 
-        public int TheTown { get; set; }    // This was previously "public int CityId { get; set; }"
+        public int CityId { get; set; }    // This was previously "public int CityId { get; set; }"
 
 
 

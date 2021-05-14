@@ -1,10 +1,10 @@
-﻿@model MVCAppAssignment2.Models.ViewModel.People;
+﻿@model People
 
 @{
-    ViewData["Title"] = "People";
+    ViewData["Title"] = "Add People";
 }
 
-<h2>People</h2>
+<h2>Add People</h2>
 
 @if (Model.PersonList.Count > 0)
 {
@@ -52,15 +52,15 @@ else
     <input asp-for="Person.Phone" />
     <span asp-validation-for="Person.Phone"></span>
 
-    <label asp-for="TheTown"></label>
-    <select asp-for="TheTown">
+    <label asp-for="Person.CityId"></label>
+    <select asp-for="Person.CityId">
         @foreach (City aCity in Model.CityList)
         {
             <option value="@aCity.Id">@aCity.Name</option>
 
         }
     </select>
-    <span asp-validation-for="TheTown"></span>
+    <span asp-validation-for="Person.CityId"></span>
 
 
     <button>Create</button>

@@ -18,7 +18,7 @@ namespace MVCAppAssignment2.Models.Repo
 
 
 
-        //-------- It's time for the C.R.U.D. implementations :
+        //-------- It's time for the C.R.U.D. implementations: --------
 
 
 
@@ -38,7 +38,7 @@ namespace MVCAppAssignment2.Models.Repo
         }
 
 
-        //-------------  Read -----------------------------------
+        //-------------  Read ----------------------------------------
         public List<Language> Read()
         {
             return _myDbContext.Languages.Include(row => row.PersonLanguages).ToList();
@@ -49,9 +49,14 @@ namespace MVCAppAssignment2.Models.Repo
             return _myDbContext.Languages.Include(row => row.PersonLanguages).SingleOrDefault(row => row.Id == id);
         }
 
+        public Language Read(int pId, int lId)
+        {
+            // This is a double lookup-> both the person and the language id's has to match! Lambda with double condition
+            return _myDbContext.Languages.SingleOrDefault(lang => lang.Id == pId && lang.Id == lId);
+        }
 
 
-        //------------- Update ----------------------------------
+        //------------- Update ----------------------------------------
         public Language Update(Language aLanguage)
         {
             throw new NotImplementedException();
@@ -60,13 +65,24 @@ namespace MVCAppAssignment2.Models.Repo
 
 
 
-        //------------ Delete the Language ------------------------------
+        //------------ Delete a Language ------------------------------
         public bool Delete(Language aLanguage)
         {
             int id = aLanguage.Id;
             Language thisLanguage = _myDbContext.Languages.Find(id);
 
             _myDbContext.Languages.Remove(thisLanguage);
+
+            return (_myDbContext.SaveChanges() == 0) ? false : true;
+
+        }
+
+        public bool Delete(int personId, int langId)
+        {
+            Language thisLanguage = _myDbContext.Languages.Find(personId, langId);
+
+            _myDbContext.Languages.Remove(thisLanguage);
+
 
             return (_myDbContext.SaveChanges() == 0) ? false : true;
 

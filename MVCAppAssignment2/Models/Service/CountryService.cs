@@ -14,7 +14,7 @@ namespace MVCAppAssignment2.Models.Service
             _myCountryRepo = theRepo;
         }
 
-
+        //---------Now some database work-----------------
 
 
 
@@ -35,20 +35,24 @@ namespace MVCAppAssignment2.Models.Service
         }
 
 
-
+        //-------------Edit--------------------------------
         public Country Edit(int id, Country country)
         {
             Country aCountry = FindBy(id);
-            if (aCountry != null)
+            if (aCountry == null)
             {
-                _myCountryRepo.Update(aCountry);    // Just send for update, with a new name and List-update!
+                return null;
             }
+
+            aCountry.Name = country.Name;
+            aCountry.Cities = country.Cities;
+            _myCountryRepo.Update(aCountry);    // Just send for update, with a new name and List-update!
 
             return aCountry;
         }
 
 
-
+        //-------------Find--------------------------------
         public Countries FindBy(Country search) //??? Finns det verkligen flera länder med samma namn?? :D 
         {
             return null;
@@ -70,7 +74,7 @@ namespace MVCAppAssignment2.Models.Service
 
 
 
-
+        //-------------Remove-------------------------------
         public bool Remove(int id)
         {
             Country aCountry = FindBy(id);

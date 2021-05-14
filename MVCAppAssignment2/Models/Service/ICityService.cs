@@ -14,6 +14,8 @@ namespace MVCAppAssignment2.Models.Service
 
         public City Edit(int id, City aCity);
 
+        public bool Update(City theCity);
+
         public bool Remove(int id);
     }
 }

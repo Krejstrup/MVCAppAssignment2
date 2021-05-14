@@ -1,38 +1,66 @@
-﻿@model Person
+﻿@model EditPerson
 @*This partial view is displaying the Bootstrap version of a div-table*@
 @*Typically called from Filter - showing one person with a header*@
 
 
-<div class="row" id="@("per" + Model.Id)">
-    <form asp-action="Create()" method="post">
-        <div class="col-2">
-            <label asp-for="@Model.FirstName"></label>
-            <input asp-for="@Model.FirstName" disabled />
-            <span asp-validation-for="@Model.FirstName"></span>
-        </div>
-        <div class="col-2">
-            <label asp-for="@Model.LastName"></label>
-            <input asp-for="@Model.LastName" disabled />
-            <span asp-validation-for="@Model.LastName"></span>
-        </div>
-        <div class="col-2">
-            <label asp-for="@Model.Phone"></label>
-            <input asp-for="@Model.Phone" disabled />
-            <span asp-validation-for="@Model.Phone"></span>
-        </div>
-        <div class="col-2">
-            <label asp-for="@Model.InCity.Name"></label>
-            <input asp-for="@Model.InCity.Name" disabled />
-            <span asp-validation-for="@Model.InCity.Name"></span>
-        </div>
-        <div class="col-1">
-            @Model.Id
-        </div>
-        <div class="col-1">
-            <input asp-for="Id" type="button" onclick="EditPerson()" id="@("ed"+@Model.Id)" value="Edit" />
-        </div>
-
-    </form>
+<div class="row" id="@("edit" + Model.Person.Id)">
+    @*---per(son)Id---*@
+    <div class="col-2">
+        <input asp-for="@Model.Person.FirstName" />
+        <span asp-validation-for="@Model.Person.FirstName"></span>
+    </div>
+    <div class="col-2">
+        <input asp-for="@Model.Person.LastName" />
+        <span asp-validation-for="@Model.Person.LastName"></span>
+    </div>
+    <div class="col-2">
+        <input asp-for="@Model.Person.Phone" disabled />
+        <span asp-validation-for="@Model.Person.Phone"></span>
+    </div>
+    <div class="col-2">
+        <input asp-for="@Model.Person.InCity.Name" disabled />
+        <span asp-validation-for="@Model.Person.InCity.Name"></span>
+    </div>
+    <div class="col-2">
+        @Model.Person.PersonLanguages.Count
+    </div>
+    <div class="col-1">
+        <button class="btn btn-info btn-sm" onclick="CloseEdit(@Model.Person.Id, event)">Close</button>
+    </div>
+    <div class="col-1">
+        <button class="btn btn-info btn-sm" onclick="EditPerson(@Model, event)">Save and Close </button>
+    </div>
 </div>
+
+
+@foreach (Language item in Model.LanguageList)@*  Vi har två olika Laguage-Listor: Personlig & Alla *@
+{
+
+    <div class="row" id="@("Lang" + item.Id )">
+        <form asp-action="Create()" method="post">
+            <div class="col-2">
+
+            </div>
+            <div class="col-2">
+            </div>
+            <div class="col-2">
+            </div>
+            <div class="col-2">
+            </div>
+            <div class="col-2">
+                @item.Name
+            </div>
+            <div class="col-1">
+                @Html.ActionLink("Add", "LangAdd", "People", null, null)
+                <input asp-for="Person.Id" type="button" onclick="LangAdd(@item.Id,event )" id="@("laa"+item.Id)" value="Add" />
+            </div>
+            <div class="col-1">
+                <input asp-for="Person.Id" type="button" onclick="LangRem(@item.Id,event)" id="@("lar"+item.Id)" value="Remove" />
+            </div>
+
+        </form>
+    </div>
+}
+
 
 

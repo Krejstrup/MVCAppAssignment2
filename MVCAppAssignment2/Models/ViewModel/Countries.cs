@@ -8,18 +8,16 @@ namespace MVCAppAssignment2.Models.ViewModel
     {
 
         [Display(Name = "List of Countries")]
-        public List<Country> CountryList { get; set; }
+        public List<Country> CountryList { get; set; }  // A list of all the countries
 
         [Display(Name = "A Country")]
-        public CreateCountry Country { get; set; }
+        public CreateCountry Country { get; set; }      // The ViewModel to create a new Country
 
         [Display(Name = "Filter")]
-        public string filter { get; set; }  // My first idea was to use the CreatePerson, and to use a <form> as filter.
-                                            // I have to have the time for this implementation too...
+        public string Filter { get; set; }              // Filter string used to filter the selection
 
-        /// <summary>
-        /// Constructor that creates a new empty list of persons.
-        /// </summary>
+
+        // On create set up the Lists with new List objects.
         public Countries()
         {
             CountryList = new List<Country>();

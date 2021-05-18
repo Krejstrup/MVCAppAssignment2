@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MVCAppAssignment2.Models.Repo;
 using MVCAppAssignment2.Models.Service;
+using System;
 
 namespace MVCAppAssignment2
 {
@@ -26,7 +28,48 @@ namespace MVCAppAssignment2
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
 
+            //--- Identity configuration --- Step 3--------------------------------------------
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                    .AddEntityFrameworkStores<PeopleDbContext>()
+                    .AddDefaultTokenProviders();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings.
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 6;        // See also ViewModel AccountRegister!
+                options.Password.RequiredUniqueChars = 1;
+
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings.
+                options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = false;    // Same user can have >1 accounts
+            });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+                options.LoginPath = "/Identity/Account/Login";
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                options.SlidingExpiration = true;
+            });
+
+
+
             //==== Register the Dependency Injections to the service collection (as #6) ===:
+
             services.AddScoped<IPeopleService, PeopleService>();
             services.AddScoped<ICityService, CityService>();
             services.AddScoped<ICountryService, CountryService>();
@@ -69,12 +112,15 @@ namespace MVCAppAssignment2
 
             app.UseRouting();
 
+            app.UseAuthentication();    //--- Step 4
             app.UseAuthorization();
 
+
+            //--------- Routing ----------------------------------------------------
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
+                    name: "Home",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
 
                 endpoints.MapControllerRoute(
@@ -92,6 +138,15 @@ namespace MVCAppAssignment2
                 endpoints.MapControllerRoute(
                     name: "Cities",
                     pattern: "{controller=Cities}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name: "Account",
+                    pattern: "{controller=UserAccount}/{action=RegisterNew}/{id?}");
+
+                //--- If nothing else, use the default: ----------------------------
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

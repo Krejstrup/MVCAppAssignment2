@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MVCAppAssignment2.Models.Data;
 using MVCAppAssignment2.Models.Repo;
 using MVCAppAssignment2.Models.Service;
 using System;
@@ -28,9 +29,9 @@ namespace MVCAppAssignment2
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
 
-            //--- Identity configuration --- Step 3--------------------------------------------
+            //--- Identity configuration ------------------------------------------ Step 3-----
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                     .AddEntityFrameworkStores<PeopleDbContext>()
                     .AddDefaultTokenProviders();
 
@@ -61,7 +62,7 @@ namespace MVCAppAssignment2
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
-                options.LoginPath = "/Identity/Account/Login";
+                options.LoginPath = "/Identity/Account/Login";  // Controller: AccountController, Page: Login
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
                 options.SlidingExpiration = true;
             });
@@ -141,7 +142,7 @@ namespace MVCAppAssignment2
 
                 endpoints.MapControllerRoute(
                     name: "Account",
-                    pattern: "{controller=UserAccount}/{action=RegisterNew}/{id?}");
+                    pattern: "{controller=UserAccount}/{action=Register}/{id?}");
 
                 //--- If nothing else, use the default: ----------------------------
                 endpoints.MapControllerRoute(

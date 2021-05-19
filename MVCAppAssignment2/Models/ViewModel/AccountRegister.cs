@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace MVCAppAssignment2.Models.ViewModel
 {
@@ -10,12 +11,29 @@ namespace MVCAppAssignment2.Models.ViewModel
         public string UserName { get; set; }
 
         [Required]
+        [Display(Name = "First Name")]
+        [StringLength(20, MinimumLength = 2)]
+        public string FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "Last Name")]
+        [StringLength(20, MinimumLength = 2)]
+        public string LastName { get; set; }
+
+
         [EmailAddress]
         [StringLength(25, MinimumLength = 6)]
         public string Email { get; set; }
 
-        [DataType(DataType.PhoneNumber)]
+        [Phone]
+        [StringLength(25, MinimumLength = 6)]
         public string Phone { get; set; }
+
+        [Required]
+        [DataType(DataType.Date)]
+        [Display(Name = "Birth date")]
+        public DateTime BirthDate { get; set; }
+
 
         [Required]
         [DataType(DataType.Password)]

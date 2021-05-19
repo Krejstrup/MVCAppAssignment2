@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MVCAppAssignment2.Models.Data;
 using MVCAppAssignment2.Models.ViewModel;
 using System.Threading.Tasks;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
@@ -9,10 +10,10 @@ namespace MVCAppAssignment2.Controllers
 {
     public class AccountController : Controller
     {
-        private UserManager<IdentityUser> _userManager;
-        private SignInManager<IdentityUser> _signInManager;
+        private UserManager<ApplicationUser> _userManager;
+        private SignInManager<ApplicationUser> _signInManager;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) // Constructor Injector
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager) // Constructor Injector
         {
             _userManager = userManager; // IdentityUser - Ska den bytas ut mot något annat? Lägg till extra Properties!!
             _signInManager = signInManager;
@@ -32,19 +33,28 @@ namespace MVCAppAssignment2.Controllers
         {
             if (ModelState.IsValid)
             {
-                IdentityUser user = new IdentityUser()
+                ApplicationUser user = new ApplicationUser()
                 {
                     UserName = newUser.UserName,
                     Email = newUser.Email,
-                    PhoneNumber = newUser.Phone
+                    PhoneNumber = newUser.Phone,
+                    FirstName = newUser.FirstName,
+                    LastName = newUser.LastName,
+                    BirthDate = newUser.BirthDate
                 };
+
+                //SqlException: Invalid column name 'BirthDate'.
+                //Invalid column name 'FirstName'.
+                //Invalid column name 'LastName'.
+
 
                 IdentityResult result = await _userManager.CreateAsync(user, newUser.Password);
 
                 // Track errors that the View cannot handle; email, username, password
                 if (result.Succeeded)   // Propertiy can not be switch'ed!
                 {
-                    // Are the person logged in now??
+                    // Are the person logged in now - not by creating the user. So Login:
+                    await _signInManager.PasswordSignInAsync(user.UserName, newUser.Password, false, false);
 
                     return RedirectToAction("Index", "Home");   // Logged in and safe
                 }
@@ -96,6 +106,22 @@ namespace MVCAppAssignment2.Controllers
             await _signInManager.SignOutAsync();
 
             return RedirectToAction("Index", "Home");
+        }
+
+
+
+        public async Task<IActionResult> AccountInfoAsync()
+        {
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+            AccountRegister theUser = new AccountRegister()
+            {
+                UserName = user.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                BirthDate = user.BirthDate,
+                Email = user.Email
+            };
+            return View(theUser);
         }
     }
 }

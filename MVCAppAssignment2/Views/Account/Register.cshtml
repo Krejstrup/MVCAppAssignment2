@@ -1,21 +1,30 @@
-﻿@model AccountRegister
+﻿@model MVCAppAssignment2.Models.ViewModel.AccountRegister
 
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Register User";
 }
 
-<h2>Register New User</h2>
+<h2>Register User</h2>
 
-<h4>AccountRegister</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Register" asp-controller="Account" method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>    @* "All" includes our rules as well *@
+        <form asp-action="Register" asp-controller="Account">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="UserName" class="control-label"></label>
                 <input asp-for="UserName" class="form-control" />
                 <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
@@ -26,6 +35,11 @@
                 <label asp-for="Phone" class="control-label"></label>
                 <input asp-for="Phone" class="form-control" />
                 <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BirthDate" class="control-label"></label>
+                <input asp-for="BirthDate" class="form-control" />
+                <span asp-validation-for="BirthDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
@@ -43,3 +57,5 @@
         </form>
     </div>
 </div>
+
+

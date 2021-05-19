@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MVCAppAssignment2.Models.Data;
 
 namespace MVCAppAssignment2.Models.Repo
 {
-    public class PeopleDbContext : IdentityDbContext<IdentityUser>  // this was ": DbContext" for just database
-    {
+    public class PeopleDbContext : IdentityDbContext<ApplicationUser>  // this was ": DbContext" for just database
+    {                                                      // Changed the IdentityUser to ApplicationUser:IdentityUser
 
         public PeopleDbContext(DbContextOptions<PeopleDbContext> options) : base(options) //step 2
         { }

@@ -1,0 +1,40 @@
+﻿@model List<ApplicationUser>
+@*AccountRegister*@
+
+@{
+    ViewData["Title"] = "User List";
+}
+
+<h2>User Listing</h2>
+
+<div>
+    <h4>AccountRegister</h4>
+    <hr />
+    <dl class="row">
+
+        <div id="ListContainer">
+            <table id="ListList">
+                <thead>
+                    <tr>
+                        <th>User Name</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (ApplicationUser item in Model)
+                    {
+                        <tr>
+                            <td>@item.UserName</td>
+                            <td>@item.FirstName</td>
+                            <td>@item.LastName</td>
+                            <td><a asp-action="Details" asp-controller="Admin" asp-route-id="@item.Id">Details</a></td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </dl>
+</div>

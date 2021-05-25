@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MVCAppAssignment2.Models.Data;
 using MVCAppAssignment2.Models.Service;
@@ -6,6 +7,7 @@ using MVCAppAssignment2.Models.ViewModel;
 
 namespace MVCAppAssignment2.Controllers
 {
+    [Authorize(Roles = "SuperAdmin, Admin")]
     public class LanguageController : Controller
     {
 

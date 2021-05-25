@@ -13,7 +13,10 @@
             @Model.Phone<br />
             @(Model.InCity == null? "Oops!" : Model.InCity.Name)
         </p>
-        <a class="btn btn-danger bt btn-sm" asp-action="Remove" asp-controller="People" asp-route-id="@Model.Id">Remove</a>
+        @if (User.IsInRole("SuperAdmin") || User.IsInRole("Admin"))
+        {
+            <a class="btn btn-danger bt btn-sm" asp-action="Remove" asp-controller="People" asp-route-id="@Model.Id">Remove</a>
+        }
     </div>
 </div>
 

@@ -29,7 +29,7 @@ namespace MVCAppAssignment2.Controllers
         /// </summary>
         /// <returns>The standard view to display.</returns>
         [HttpGet]
-        public IActionResult Index()       // WORKS!!
+        public IActionResult Index()
         {
             return View();
         }
@@ -40,7 +40,7 @@ namespace MVCAppAssignment2.Controllers
         /// </summary>
         /// <returns>The list of all the persons in the database/memory.</returns>
         [HttpGet]
-        public IActionResult AllPersons() // WORKS!!
+        public IActionResult AllPersons()
         {
             // Send down all the persons in this Model
             People allThePeopleAndCities = _myPService.All();

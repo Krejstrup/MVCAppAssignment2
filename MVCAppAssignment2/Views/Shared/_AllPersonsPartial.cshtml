@@ -30,9 +30,12 @@
         <div class="col-1">
             <h5>Action</h5>
         </div>
-        <div class="col-1">
-            <h5>Action</h5>
-        </div>
+        @if (User.IsInRole("Admin, SuperAdmin"))
+        {
+            <div class="col-1">
+                <h5>Action</h5>
+            </div>
+        }
     </div>
     @foreach (Person aPerson in Model.PersonList)  //===THE BOOTSTRAP DIV-TABLE TRICK===
     {

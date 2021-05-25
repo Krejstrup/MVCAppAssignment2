@@ -21,12 +21,13 @@
         @Model.PersonLanguages.Count
     </div>
     <div class="col-1">
-        @* <button class="btn btn-info btn-sm" onclick="Edit(@Model.Id , event)" id="@("ab"+@Model.Id)">Edit Languages</button> *@
         <a class="btn btn-info btn-sm" asp-action="LangEdit" asp-controller="People" method="post" asp-route-id="@Model.Id">Edit Lang</a> @* was:value="@Model.Id"  *@
-        @* <button class="btn btn-info btn-sm" method="post" value="18" formaction="/People/Edit">Edit Lang</button> *@
-        @* <a asp-action="Delete" asp-controller="City" asp-route-id="@aCity.Id">Delete</a> *@
     </div>
-    <div class="col-1">
-        <button class="btn btn-warning btn-sm" onclick="DeletePerson(@Model.Id ,event)" id="@("del"+@Model.Id)">Delete</button>
-    </div>
+    @if (User.IsInRole("SuperAdmin") || User.IsInRole("Admin"))
+    {
+
+        <div class="col-1">
+            <button class="btn btn-warning btn-sm" onclick="DeletePerson(@Model.Id ,event)" id="@("del"+@Model.Id)">Delete</button>
+        </div>
+    }
 </div>

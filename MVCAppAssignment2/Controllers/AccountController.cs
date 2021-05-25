@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MVCAppAssignment2.Models.Data;
 using MVCAppAssignment2.Models.ViewModel;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
@@ -12,12 +14,28 @@ namespace MVCAppAssignment2.Controllers
     {
         private UserManager<ApplicationUser> _userManager;
         private SignInManager<ApplicationUser> _signInManager;
+        private RoleManager<IdentityRole> _roleManager;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager) // Constructor Injector
+        public AccountController(UserManager<ApplicationUser> userManager,
+                                SignInManager<ApplicationUser> signInManager,
+                                RoleManager<IdentityRole> roleManager) // Constructor Injector
         {
             _userManager = userManager; // IdentityUser - Ska den bytas ut mot något annat? Lägg till extra Properties!!
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
+
+
+        //===============Early Questions:=================================================
+        // What Roles should we use? - SuperAdmin, Admin & StdUser.
+        // These should be created only once and then used!
+        // StdUser should be able to show list of people/Add Person/Edit a person.
+        // Admin should also be abel to Show/Create/Edit/Delete People/Cities/Countries.
+        // (StdUser noAccess to City/Country controller.
+        //          Should be able to add person to city, etc(?))
+        // Try to remove the menu items too - anoying to watch a unuseful page with errors
+        //================================================================================
+
 
 
         [HttpGet]
@@ -43,31 +61,30 @@ namespace MVCAppAssignment2.Controllers
                     BirthDate = newUser.BirthDate
                 };
 
-                //SqlException: Invalid column name 'BirthDate'.
-                //Invalid column name 'FirstName'.
-                //Invalid column name 'LastName'.
+
+                //---- All new registered users should be in role User-----------------------------
+
+                IdentityResult userResult = await _userManager.CreateAsync(user, newUser.Password);
+                IdentityResult roleResult = await _userManager.AddToRoleAsync(user, "User");
 
 
-                IdentityResult result = await _userManager.CreateAsync(user, newUser.Password);
-
-                // Track errors that the View cannot handle; email, username, password
-                if (result.Succeeded)   // Propertiy can not be switch'ed!
+                //----- Track errors that the View cannot handle; email, username, password--------
+                if (userResult.Succeeded && roleResult.Succeeded)
                 {
                     // Are the person logged in now - not by creating the user. So Login:
                     await _signInManager.PasswordSignInAsync(user.UserName, newUser.Password, false, false);
-
                     return RedirectToAction("Index", "Home");   // Logged in and safe
                 }
 
-                foreach (var item in result.Errors)
+                foreach (var item in userResult.Errors)
                 {
                     ModelState.AddModelError(item.Code, item.Description); // Look into the codes here!!
                 }
             }
-
-
             return View(newUser);
         }
+
+
 
         [HttpGet]
         public IActionResult Login()
@@ -98,6 +115,8 @@ namespace MVCAppAssignment2.Controllers
             return View(theUser);
         }
 
+
+
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> Logout()
@@ -113,15 +132,28 @@ namespace MVCAppAssignment2.Controllers
         public async Task<IActionResult> AccountInfoAsync()
         {
             ApplicationUser user = await _userManager.GetUserAsync(User);
-            AccountRegister theUser = new AccountRegister()
+
+            if (user == null)   // session time out can get this to null
             {
-                UserName = user.UserName,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                BirthDate = user.BirthDate,
-                Email = user.Email
-            };
+                return RedirectToAction("Index", "Home");
+            }
+
+            IList<string> userRoles = await _userManager.GetRolesAsync(user);
+            List<IdentityRole> rolesAvailable = _roleManager.Roles.ToList();
+            UserDetailsInfo theUser = new UserDetailsInfo(user, userRoles, rolesAvailable);
+
             return View(theUser);
+        }
+
+
+        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int userId) // Must be logged in as SuperAdmin to delete an Admin?
+        {
+            //--- Not implemented yet!
+
+
+            return View();
         }
     }
 }

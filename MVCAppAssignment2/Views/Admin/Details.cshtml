@@ -1,0 +1,111 @@
+﻿@model UserDetailsInfo
+
+@{
+    ViewData["Title"] = "User Details";
+}
+
+<h3>Details for user @Model.UserName</h3>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BirthDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BirthDate)
+        </dd>
+
+    </dl>
+</div>
+
+@if (User.IsInRole("SuperAdmin"))
+{
+    <hr />
+    <h4>Roles:</h4>
+
+    <div class="row">
+        <div class="col-3">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Role</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.UserRoles)
+                    {
+                        <tr>
+                            <td>@item</td>
+                            @if (!string.Equals(item, "SuperAdmin", StringComparison.OrdinalIgnoreCase))
+                            {
+                                <td>
+                                    @Html.ActionLink("Remove", "RemoveRoleFromUser", "Admin", new { userId = Model.UserId, roleName = item })
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-3">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Role</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.IdentityRoles)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>
+                                @Html.ActionLink("Add", "AddRoleToUser", "Admin", new { userId = Model.UserId, roleName = item.Name })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+}
+
+<hr />
+<div>
+
+    <a asp-controller="Admin" asp-action="UserList">Back to List</a>
+</div>

@@ -1,0 +1,66 @@
+﻿@model RolesManagement
+
+@{
+    ViewData["Title"] = "RolesManagment";
+}
+
+<h2>Set Roles for user </h2>
+
+<div>
+    <h4>Roles Managment for user </h4>
+
+    @if (ViewBag.ErrorMsg != null)
+    {
+        <h2>@ViewBag.ErrorMsg</h2>
+    }
+
+    <hr />
+    <div class="row">
+        <div class="col-6">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Role</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.UserRoles)
+                    {
+                        <tr>
+                            <td>@item</td>
+                            <td>
+                                @Html.ActionLink("Remove", "RemoveRoleFromUser", "Admin", new { userId = Model.UserId, roleName = item })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-6">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Role</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.IdentityRoles)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>
+                                @Html.ActionLink("Add", "AddRoleToUser", "Admin", new { userId = Model.UserId, roleName = item.Name })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div>
+    @Html.ActionLink("Back to Details", "Details", new { id = Model.UserId }) |
+    <a asp-action="UserList">Back to User List</a>
+</div>

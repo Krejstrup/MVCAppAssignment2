@@ -1,4 +1,4 @@
-﻿@model AccountRegister
+﻿@model UserDetailsInfo
 
 @{
     ViewData["Title"] = "AccountInfo";
@@ -39,10 +39,15 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Email)
         </dd>
-
+        @foreach (string Role in Model.UserRoles)
+        {
+            <dt class="col-sm-2">
+                Role
+            </dt>
+            <dd class="col-sm-10">
+                @Role
+            </dd>
+        }
     </dl>
 </div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
-</div>
+

@@ -10,6 +10,8 @@ namespace MVCAppAssignment2.Models.Service
 
         public Cities All();
 
+        public Cities ApiAll();
+
         public City FindBy(int id);
 
         public City Edit(int id, City aCity);

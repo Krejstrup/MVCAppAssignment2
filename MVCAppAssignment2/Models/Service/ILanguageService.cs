@@ -9,6 +9,8 @@ namespace MVCAppAssignment2.Models.Service
 
         public Languages All();
 
+        public Languages ApiAll();
+
         public Language FindBy(int id);
 
         public Language Edit(int id, Language aLanguage);

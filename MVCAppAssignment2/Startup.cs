@@ -5,10 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using MVCAppAssignment2.Models.Data;
 using MVCAppAssignment2.Models.Repo;
 using MVCAppAssignment2.Models.Service;
 using System;
+using System.IO;
+using System.Reflection;
 
 namespace MVCAppAssignment2
 {
@@ -87,10 +90,45 @@ namespace MVCAppAssignment2
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();    // Original setup
 
+
+            //---------------Add CORS = Cross Origin Resource Sharing ---------------------
+            // To handle requests from other site
+
+            services.AddCors(options =>
+            {
+
+                options.AddPolicy("ReactPolicy",
+                    builder =>
+                    {
+                        builder.WithOrigins("*")                // "*" = "whatever!" (ok in closed environment)
+                                            .AllowAnyHeader()
+                                            .AllowAnyMethod();
+                    });
+            });
+
+
+
+            //-------------------Swagger----------------------------------------------------
+            // See: https://github.com/domaindrivendev/Swashbuckle.AspNetCore
+            // Swagger gives us the ability to give first hand information about the JSON API
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "React People API", Version = "v1" });    // OpenApiInfo is .NET Core 3.0++
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
+
+
+            services.AddMvc();
+
+
         }   // remove the migration with: ef migrations remove
             // When any changes of the data models for the database -> make new migration!
             // dotnet ef migrations add
             // dotnet ef database update
+            //
 
 
 
@@ -111,8 +149,19 @@ namespace MVCAppAssignment2
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseRouting();
+            //---- SWAGGER ----------------------------------------------------------
+            app.UseSwagger();
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "React API V1");
+            });
 
+
+
+            app.UseRouting();
+            app.UseCors();
             app.UseAuthentication();    //--- Step 4
             app.UseAuthorization();
 
@@ -120,6 +169,7 @@ namespace MVCAppAssignment2
             //--------- Routing ----------------------------------------------------
             app.UseEndpoints(endpoints =>
             {
+
                 endpoints.MapControllerRoute(
                     name: "Home",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

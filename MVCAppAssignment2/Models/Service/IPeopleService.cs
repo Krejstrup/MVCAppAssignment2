@@ -14,6 +14,7 @@ namespace MVCAppAssignment2.Models.Service
 
         public People All();
 
+        public People ApiAll();
         public People FindBy(People search);
 
         public Person FindBy(int id);

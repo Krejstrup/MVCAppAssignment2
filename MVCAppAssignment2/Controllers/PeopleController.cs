@@ -24,7 +24,7 @@ namespace MVCAppAssignment2.Controllers
 
 
         /// <summary>
-        /// The Index page gets a Data-View-Model of all the People in a List<>.
+        /// The Index page gets a Data-View-Model of all the People in a List.
         /// The page is totally redrawn.
         /// </summary>
         /// <returns>The build View by full list.</returns>
@@ -57,8 +57,9 @@ namespace MVCAppAssignment2.Controllers
                 return RedirectToAction(nameof(Index));     // The RedirectToAction() method makes new requests, and URL in the
             }   // browser's address bar is updated with the generated URL by MVC. Standard Index will load.
 
-
-            return View("Index", _myPersService.All());
+            People allThePeopleAndCities = _myPersService.All();
+            allThePeopleAndCities.CityList = _myCityService.All().CityList; // Used for creating a New Person
+            return View("Index", allThePeopleAndCities);
 
         }
 

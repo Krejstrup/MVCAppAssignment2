@@ -71,7 +71,7 @@ namespace MVCAppAssignment2.Controllers
                 //----- Track errors that the View cannot handle; email, username, password--------
                 if (userResult.Succeeded && roleResult.Succeeded)
                 {
-                    // Are the person logged in now - not by creating the user. So Login:
+                    // Are the person logged in now? Not by creating the user => So Login:
                     await _signInManager.PasswordSignInAsync(user.UserName, newUser.Password, false, false);
                     return RedirectToAction("Index", "Home");   // Logged in and safe
                 }
@@ -87,7 +87,7 @@ namespace MVCAppAssignment2.Controllers
 
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login()        // Not used
         {
             return View();
         }
@@ -148,10 +148,27 @@ namespace MVCAppAssignment2.Controllers
 
         [Authorize(Roles = "SuperAdmin")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(int userId) // Must be logged in as SuperAdmin to delete an Admin?
+        public async Task<IActionResult> Delete(string userId) // Must be logged in as SuperAdmin to delete an Admin?
         {
             //--- Not implemented yet!
 
+            ApplicationUser theUser = await _userManager.FindByIdAsync(userId);
+
+            if (theUser != null)
+            {
+                IList<string> userRoles = await _userManager.GetRolesAsync(theUser); // what roles does this person have?
+                if (userRoles.Contains("SuperAdmin"))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                IdentityResult userResult = await _userManager.DeleteAsync(theUser);
+                if (userResult == IdentityResult.Success)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+            }
 
             return View();
         }

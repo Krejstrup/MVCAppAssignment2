@@ -116,6 +116,9 @@ namespace MVCAppAssignment2.Controllers
         }
 
 
+
+
+
         //------- Add Role(s) to User - only SuperAdmin ----------------------------------------
         [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> AddRoleToUser(string userId, string roleName)  // Is this "SuperAdmin"?
@@ -125,27 +128,37 @@ namespace MVCAppAssignment2.Controllers
             ApplicationUser theUser = await _userManager.FindByIdAsync(userId); // fetch the user from database
 
 
-            if (theUser == null || string.Equals(roleName, "SuperAdmin", StringComparison.OrdinalIgnoreCase))
+            if (theUser != null)
             {
-                return RedirectToAction(nameof(UserList));  // User not found, go back to the list again
+
+
+                if (string.Equals(roleName, "SuperAdmin", StringComparison.OrdinalIgnoreCase))
+                {
+
+                    IdentityResult result = await _userManager.AddToRoleAsync(theUser, roleName);
+
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Details", new { id = userId });
+                    }
+
+                }
+
+                IList<string> userRoles = await _userManager.GetRolesAsync(theUser);
+                List<IdentityRole> identityRoles = _roleManager.Roles.ToList();
+
+                RolesManagement returnVM = new RolesManagement(userId, userRoles, identityRoles);
+
+                ViewBag.ErrorMsg = "Failed to change role for user!";
+                return View("Details", returnVM);        //"SetRoles", returnVM);  // Jump back to the RoleManagement page
             }
 
-            IdentityResult result = await _userManager.AddToRoleAsync(theUser, roleName);
+            return RedirectToAction("UserList");
 
-            if (result.Succeeded)
-            {
-                return RedirectToAction("Details", new { id = userId });        //"SetRoles", new { id = userId });
-            }
-
-            IList<string> userRoles = await _userManager.GetRolesAsync(theUser);
-            List<IdentityRole> identityRoles = _roleManager.Roles.ToList();
-
-            RolesManagement returnVM = new RolesManagement(userId, userRoles, identityRoles);
-
-            ViewBag.ErrorMsg = "Failed to change role for user!";
-
-            return View("Details", returnVM);        //"SetRoles", returnVM);  // Jump back to the RoleManagement page
         }
+
+
+
 
 
 

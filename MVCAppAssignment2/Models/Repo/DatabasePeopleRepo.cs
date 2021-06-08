@@ -41,7 +41,6 @@ namespace MVCAppAssignment2.Models.Repo
             _myDbContext.Peoples.Add(aNewPerson);
             int result = _myDbContext.SaveChanges();
 
-
             if (result == 0)    // 0 is no changes to database
             {
                 throw new Exception("Could not write to database");
@@ -54,13 +53,11 @@ namespace MVCAppAssignment2.Models.Repo
         //-------------Read from database--------------------------------------
 
         public List<Person> Read()
-        {   // Inkludera även Listan över språk från PersonLanguages. ThenInclude ??
-
+        {
             List<Person> newPerson = _myDbContext.Peoples
                                         .Include(row => row.InCity)
                                         .Include(row => row.PersonLanguages)
                                         .ToList();
-
             return newPerson;
         }
 
@@ -112,11 +109,9 @@ namespace MVCAppAssignment2.Models.Repo
 
         public bool Delete(Person aPerson)
         {
-
             _myDbContext.Peoples.Remove(aPerson);
 
             return _myDbContext.SaveChanges() > 0 ? true : false;
-
         }
     }
 }

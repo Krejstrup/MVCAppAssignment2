@@ -19,10 +19,7 @@ namespace MVCAppAssignment2.Models.Repo
         /// <summary>
         /// Create adds a new person to the memory list of persons. Everyone gets an unique id.
         /// </summary>
-        /// <param name="inFirstName">The name of this persons first name.</param>
-        /// <param name="inLastName">The name of this persons family name.</param>
-        /// <param name="phone">The phone number of this person.</param>
-        /// <param name="city">The city of this person</param>
+        /// <param name="aPerson">The object of the Person to create.</param>
         /// <returns>Returns the new person object.</returns>
         public Person Create(CreatePerson aPerson)  //string inFirstName, string inLastName, string phone, string city
         {   // Could use a Person Data field instead: Create(CreatePerson aPerson) 
@@ -33,7 +30,6 @@ namespace MVCAppAssignment2.Models.Repo
                 FirstName = aPerson.FirstName,
                 LastName = aPerson.LastName,
                 Phone = aPerson.Phone,
-                //City = aPerson.City   // It's not a string anymore!!!
             };
 
             _personList.Add(aNewPerson);
@@ -44,7 +40,7 @@ namespace MVCAppAssignment2.Models.Repo
         /// <summary>
         /// Read returns the whole list of persons in the memory.
         /// </summary>
-        /// <returns>Returns a List<> of all the Persons.</returns>
+        /// <returns>Returns a List of all the Persons.</returns>
         public List<Person> Read()
         {
             return _personList;

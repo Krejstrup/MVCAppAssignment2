@@ -14,12 +14,13 @@ namespace MVCAppAssignment2.Models.Service
     public class PeopleService : IPeopleService
     {
 
-        IPeopleRepo _myPeopDbRepo;
+        IPeopleRepo _myPeopleDbRepo;
         IPersonLanguage _myPersonLanguageDbRepo;
+
 
         public PeopleService(IPeopleRepo theRepo, IPersonLanguage PersonLanguageDbRepo)
         {
-            _myPeopDbRepo = theRepo;
+            _myPeopleDbRepo = theRepo;
             _myPersonLanguageDbRepo = PersonLanguageDbRepo;
         }
 
@@ -33,7 +34,7 @@ namespace MVCAppAssignment2.Models.Service
         /// <returns>Returns the newly created Person.</returns>
         public Person Add(CreatePerson addPerson)
         {
-            return _myPeopDbRepo.Create(addPerson);
+            return _myPeopleDbRepo.Create(addPerson);
         }
 
 
@@ -67,7 +68,37 @@ namespace MVCAppAssignment2.Models.Service
         {
             People theWholeList = new People();
 
-            theWholeList.PersonList = _myPeopDbRepo.Read();
+            theWholeList.PersonList = _myPeopleDbRepo.Read();
+            return theWholeList;
+        }
+
+        /// <summary>
+        /// ApiAll returns the entire list of all persons stored in memory. The list contains
+        /// lists of Cities and Languages that the forward object to furter objects is emptied.
+        /// </summary>
+        /// <returns>Returns the entaire list </returns>
+        public People ApiAll()
+        {
+            People theWholeList = new People();
+
+            theWholeList.PersonList = _myPeopleDbRepo.Read();
+            foreach (Person item in theWholeList.PersonList)      // TODO: make a new function in the Service for this!!!
+            {
+                if (item.InCity != null)
+                {
+                    item.InCity.Peoples = null;
+
+                    if (item.InCity.Country != null)
+                    {
+                        item.InCity.Country.Cities = null;
+                    }
+                }
+
+                foreach (PersonLanguage language in item.PersonLanguages)
+                {
+                    language.Person = null;
+                }
+            }
             return theWholeList;
         }
 
@@ -93,7 +124,7 @@ namespace MVCAppAssignment2.Models.Service
             {
                 int parseInt = 0;
                 bool isNumber = false;
-                foreach (Person memPers in _myPeopDbRepo.Read())
+                foreach (Person memPers in _myPeopleDbRepo.Read())
                 {
                     isNumber = Int32.TryParse(lookup, out parseInt);
                     if (lookup == memPers.FirstName)
@@ -117,7 +148,7 @@ namespace MVCAppAssignment2.Models.Service
             }
             else if (search.PersonList.Count > 0)       // Proceed looking for a Person matching a form-input:
             {
-                foreach (Person memPers in _myPeopDbRepo.Read())
+                foreach (Person memPers in _myPeopleDbRepo.Read())
                 {
                     foreach (Person searchPers in search.PersonList)
                     {
@@ -153,7 +184,7 @@ namespace MVCAppAssignment2.Models.Service
         /// <returns>Retuns the found person or null if person not found.</returns>
         public Person FindBy(int id)
         {
-            foreach (Person aPerson in _myPeopDbRepo.Read())
+            foreach (Person aPerson in _myPeopleDbRepo.Read())
             {
                 if (aPerson.Id == id)
                 {
@@ -189,7 +220,7 @@ namespace MVCAppAssignment2.Models.Service
             aPerson.InCity = person.InCity;
             aPerson.PersonLanguages = person.PersonLanguages;
 
-            return _myPeopDbRepo.Update(aPerson);
+            return _myPeopleDbRepo.Update(aPerson);
         }
 
         /// <summary>
@@ -210,15 +241,8 @@ namespace MVCAppAssignment2.Models.Service
 
             aPerson = person.Person;
 
-            return _myPeopDbRepo.Update(aPerson);
+            return _myPeopleDbRepo.Update(aPerson);
         }
-
-        public bool Edit()  //???????????
-        {
-            Person newPerson = new Person();
-            return true;
-        }
-
 
 
 
@@ -232,7 +256,11 @@ namespace MVCAppAssignment2.Models.Service
         public bool Remove(int id)
         {
             Person aPerson = FindBy(id);
-            return _myPeopDbRepo.Delete(aPerson);
+            if (aPerson == null)
+            {
+                return false;
+            }
+            return _myPeopleDbRepo.Delete(aPerson);
         }
 
 
@@ -247,7 +275,7 @@ namespace MVCAppAssignment2.Models.Service
         {
             if (aPerson != null)
             {
-                return _myPeopDbRepo.Delete(aPerson);
+                return _myPeopleDbRepo.Delete(aPerson);
             }
             else
             {

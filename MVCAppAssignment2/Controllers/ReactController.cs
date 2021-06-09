@@ -42,7 +42,7 @@ namespace MVCAppAssignment2.Controllers
         /// <param name="person">The person data that should be appended to the database.</param>
         /// <returns>Returns the person if ok, otherwise a BadRequest for the Client.</returns>
         [HttpPost]
-        public void Create([FromBody] CreatePerson person)  // TODO: Model binding
+        public ActionResult<Person> Create([FromBody] CreatePerson person)  // TODO: Model binding
         {
             if (person is null)
             {
@@ -52,15 +52,16 @@ namespace MVCAppAssignment2.Controllers
             if (ModelState.IsValid)
             {
                 Person newPerson = _myPeopleService.Add(person);
+                // remove other persons in the City list
+                //
+                newPerson.InCity.Peoples = null;
                 if (newPerson != null)
                 {
-                    Response.StatusCode = 200;
-                }
-                else
-                {
-                    Response.StatusCode = 400;
+                    return Created("", newPerson);
                 }
             }
+
+            return BadRequest();
         }
 
 
